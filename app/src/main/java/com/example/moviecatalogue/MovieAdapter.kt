@@ -1,13 +1,14 @@
 package com.example.moviecatalogue
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import java.util.ArrayList
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import java.util.*
 
 class MovieAdapter(
     context: Context,
@@ -34,7 +35,11 @@ class MovieAdapter(
 
         val detailsButton = listItemView.findViewById<Button>(R.id.movie_details_button)
         detailsButton.setOnClickListener {
-            (context as MainActivity).openPreview(nameTextView, nameTextView.text.toString(), currentMovie.imageResourceId)
+            (context as MainActivity).openPreview(
+                nameTextView,
+                nameTextView.text.toString(),
+                currentMovie.imageResourceId
+            )
         }
 
         return listItemView
