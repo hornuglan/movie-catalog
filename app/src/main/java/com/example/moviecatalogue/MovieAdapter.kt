@@ -1,19 +1,19 @@
 package com.example.moviecatalogue
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.*
 import java.util.ArrayList
 
-class MovieAdapter(context: Context, sights: ArrayList<Movie>) :
-    ArrayAdapter<Movie>(context, 0, sights) {
+class MovieAdapter(
+    context: Context,
+    movies: ArrayList<Movie>
+) :
+    ArrayAdapter<Movie>(context, 0, movies) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
@@ -30,7 +30,12 @@ class MovieAdapter(context: Context, sights: ArrayList<Movie>) :
         nameTextView.setText(currentMovie!!.nameResourceId)
 
         val imageView = listItemView.findViewById<ImageView>(R.id.movie_poster)
-        imageView.setImageResource(currentMovie!!.imageResourceId)
+        imageView.setImageResource(currentMovie.imageResourceId)
+
+        val detailsButton = listItemView.findViewById<Button>(R.id.movie_details_button)
+        detailsButton.setOnClickListener {
+            (context as MainActivity).openPreview(nameTextView.text.toString(), currentMovie.imageResourceId)
+        }
 
         return listItemView
     }

@@ -1,14 +1,12 @@
 package com.example.moviecatalogue
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var detailsButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,5 +26,14 @@ class MainActivity : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.list_movies)
 
         listView.adapter = adapter
+    }
+
+    fun openPreview(movieTitle: String, moviePoster: Int ) {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        val b = Bundle()
+        b.putString("movieTitle", movieTitle)
+        b.putInt("moviePoster", moviePoster)
+        intent.putExtras(b)
+        this.startActivity(intent)
     }
 }
