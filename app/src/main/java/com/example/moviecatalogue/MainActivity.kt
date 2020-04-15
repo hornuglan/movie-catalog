@@ -1,12 +1,22 @@
 package com.example.moviecatalogue
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
-import android.widget.*
-import java.util.ArrayList
+import android.os.Parcelable
+import android.widget.Button
+import android.widget.ListView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var listView: ListView
+    private lateinit var inviteFriendButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,17 +33,28 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = MovieAdapter(this, movies)
 
-        val listView = findViewById<ListView>(R.id.list_movies)
+        listView = findViewById(R.id.list_movies)
 
         listView.adapter = adapter
+
+        inviteFriendButton = findViewById(R.id.invite_friend_button)
+        inviteFriendButton.setOnClickListener { inviteFriend() }
     }
 
-    fun openPreview(movieTitle: String, moviePoster: Int ) {
+    fun openPreview(textView: TextView ,movieTitle: String, moviePoster: Int ) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         val b = Bundle()
         b.putString("movieTitle", movieTitle)
         b.putInt("moviePoster", moviePoster)
         intent.putExtras(b)
+        this.startActivity(intent)
+
+        textView.setTextColor(resources.getColor(R.color.clickedTitle))
+    }
+
+    private fun inviteFriend() {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
+        intent.putExtra(Intent.EXTRA_TEXT, "Hello! Join me in this Movies Catalogue App:-)")
         this.startActivity(intent)
     }
 }

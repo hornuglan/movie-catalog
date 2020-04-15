@@ -13,6 +13,7 @@
 
     //Buttons
     <string name="details_button">Details</string>
+    <string name="invite_friend_button">Invite friend</string>
 
     //Movie Titles
     <string name="guardians_of_the_galaxy_title">Guardians of the Galaxy</string>

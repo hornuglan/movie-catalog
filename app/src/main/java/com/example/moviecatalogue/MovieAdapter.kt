@@ -34,7 +34,7 @@ class MovieAdapter(
 
         val detailsButton = listItemView.findViewById<Button>(R.id.movie_details_button)
         detailsButton.setOnClickListener {
-            (context as MainActivity).openPreview(nameTextView.text.toString(), currentMovie.imageResourceId)
+            (context as MainActivity).openPreview(nameTextView, nameTextView.text.toString(), currentMovie.imageResourceId)
         }
 
         return listItemView
