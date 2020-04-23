@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">Movie catalogue</string>
+    <string name="app_name">Movie Catalogue</string>
+
+    //Placeholders
+    <string name="image_placeholder">Movie Poster</string>
+    <string name="movie_title_placeholder">Movie Title</string>
+    <string name="movie_description_placeholder">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </string>
+
+    //Buttons
+    <string name="details_button">Details</string>
+    <string name="invite_friend_button">Invite friend</string>
+
+    //Movie Titles
+    <string name="guardians_of_the_galaxy_title">Guardians of the Galaxy</string>
+    <string name="grand_hotel_budapest_title">The Grand Budapest Hotel</string>
+    <string name="what_we_do_in_the_shadows_title">What We Do in the Shadows</string>
+    <string name="gone_with_the_wind_title">Gone With the Wind</string>
+    <string name="iron_man_title">Iron Man</string>
+    <string name="thor_ragnarok_title">Thor: Ragnarok</string>
+    <string name="knives_out_title">Knives Out</string>
 </resources>
