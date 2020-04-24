@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="details_button">Детали</string>
+    <string name="invite_friend_button">Пригласить друга</string>
+</resources>
