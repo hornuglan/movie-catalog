@@ -3,18 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorAccent"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/invite_friend_button"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:drawableStart="@drawable/ic_person_add_black_18dp"
-        android:drawablePadding="5dp"
-        android:text="@string/invite_friend_button" />
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <Button
+            android:id="@+id/change_theme_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:onClick="changeTheme"
+            android:text="@string/change_theme_button" />
+
+        <Button
+            android:id="@+id/invite_friend_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:drawableStart="@drawable/ic_person_add_black_18dp"
+            android:drawablePadding="5dp"
+            android:text="@string/invite_friend_button" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_movies"

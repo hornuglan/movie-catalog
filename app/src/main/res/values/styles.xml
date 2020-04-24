@@ -8,6 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Dark" parent="AppTheme">
+        <item name="colorPrimary">#0A39A3</item>
+        <item name="colorPrimaryDark">#203168</item>
+        <item name="colorAccent">#84B5C9</item>
+    </style>
+
+    <style name="Light" parent="AppTheme">
+        <item name="colorPrimary">#7AAD45</item>
+        <item name="colorPrimaryDark">#1E7017</item>
+        <item name="colorAccent">#D8D3C4</item>
+    </style>
+
     <style name="MainTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
