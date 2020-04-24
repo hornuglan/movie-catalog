@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MovieDetailsActivity" />
+            android:name=".MovieDetailsActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation">

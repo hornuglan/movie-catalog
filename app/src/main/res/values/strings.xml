@@ -23,4 +23,10 @@
     <string name="iron_man_title" translatable="false">Iron Man</string>
     <string name="thor_ragnarok_title" translatable="false">Thor: Ragnarok</string>
     <string name="knives_out_title" translatable="false">Knives Out</string>
+    
+    //Alert Dialog
+    <string name="close_app_title">Quit</string>
+    <string name="close_app_message">Do you really want to close the app?</string>
+    <string name="positive_button">Yes</string>
+    <string name="negative_button">Cancel</string>
 </resources>

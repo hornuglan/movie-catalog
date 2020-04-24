@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -46,6 +48,23 @@ class MainActivity : AppCompatActivity() {
 
         inviteFriendButton = findViewById(R.id.invite_friend_button)
         inviteFriendButton.setOnClickListener { inviteFriend() }
+    }
+
+    override fun onBackPressed() {
+        val dialog = AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog)
+        dialog
+            .setTitle(R.string.close_app_title)
+            .setMessage(R.string.close_app_message)
+        dialog.apply {
+            setPositiveButton(R.string.positive_button) { _, _->
+                super.onBackPressed()
+            }
+            setNegativeButton(R.string.negative_button) { dialog, _ ->
+                dialog.cancel()
+            }
+        }
+
+        dialog.show()
     }
 
     fun openPreview(textView: TextView, movieTitle: String, moviePoster: Int) {

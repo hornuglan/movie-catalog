@@ -3,4 +3,8 @@
     <string name="app_name">Movie Catalogue</string>
     <string name="invite_friend_button">Inviter un ami</string>
     <string name="details_button">Détails</string>
+    <string name="close_app_message">Voulez-vous vraiment fermer l\'application?</string>
+    <string name="close_app_title">Quitter</string>
+    <string name="positive_button">OK</string>
+    <string name="negative_button">Annulé</string>
 </resources>

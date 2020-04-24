@@ -3,4 +3,8 @@
     <string name="app_name">Movie Catalogue</string>
     <string name="details_button">Детали</string>
     <string name="invite_friend_button">Пригласить друга</string>
+    <string name="close_app_message">Вы действительно хотите выйти из приложения?</string>
+    <string name="close_app_title">Выход из приложения</string>
+    <string name="positive_button">Выйти</string>
+    <string name="negative_button">Отмена</string>
 </resources>
