@@ -18,8 +18,8 @@
 
     <ListView
         android:id="@+id/list_movies"
-        tools:listitem="@layout/list_view_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/list_view_item" />
 
 </LinearLayout>

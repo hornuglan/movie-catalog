@@ -7,4 +7,11 @@
     <string name="close_app_title">Quitter</string>
     <string name="positive_button">OK</string>
     <string name="negative_button">Annulé</string>
+    <string name="gone_with_the_wind_title">Autant en emporte le vent</string>
+    <string name="grand_hotel_budapest_title">The Grand Budapest Hotel</string>
+    <string name="guardians_of_the_galaxy_title">Les Gardiens de la Galaxie</string>
+    <string name="iron_man_title">Iron Man</string>
+    <string name="knives_out_title">À couteaux tirés</string>
+    <string name="thor_ragnarok_title">Thor : Ragnarok</string>
+    <string name="what_we_do_in_the_shadows_title">Vampires en toute intimité</string>
 </resources>

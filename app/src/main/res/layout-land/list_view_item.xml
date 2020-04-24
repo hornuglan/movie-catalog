@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/movie_poster"
-        android:contentDescription="@string/image_placeholder"
-        style="@style/MovieListPoster" />
+        style="@style/MovieListPoster"
+        android:contentDescription="@string/image_placeholder" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -18,8 +18,8 @@
 
         <TextView
             android:id="@+id/movie_title"
-            android:text="@string/movie_title_placeholder"
-            style="@style/MovieListTitle" />
+            style="@style/MovieListTitle"
+            android:text="@string/movie_title_placeholder" />
 
         <Button
             android:id="@+id/movie_details_button"

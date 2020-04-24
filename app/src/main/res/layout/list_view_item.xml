@@ -4,26 +4,26 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/movie_title"
-            android:layout_gravity="center_horizontal"
-            android:padding="10dp"
-            android:text="@string/movie_title_placeholder"
-            style="@style/MovieListTitle" />
+    <TextView
+        android:id="@+id/movie_title"
+        style="@style/MovieListTitle"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="@string/movie_title_placeholder" />
 
-        <ImageView
-            android:id="@+id/movie_poster"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:contentDescription="@string/image_placeholder"
-            style="@style/MovieListPoster" />
+    <ImageView
+        android:id="@+id/movie_poster"
+        style="@style/MovieListPoster"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/image_placeholder" />
 
     <Button
         android:id="@+id/movie_details_button"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:text="@string/details_button" />
 

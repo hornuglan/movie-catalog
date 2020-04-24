@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             .setTitle(R.string.close_app_title)
             .setMessage(R.string.close_app_message)
         dialog.apply {
-            setPositiveButton(R.string.positive_button) { _, _->
+            setPositiveButton(R.string.positive_button) { _, _ ->
                 super.onBackPressed()
             }
             setNegativeButton(R.string.negative_button) { dialog, _ ->

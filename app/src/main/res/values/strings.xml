@@ -16,13 +16,13 @@
     <string name="invite_friend_button">Invite friend</string>
 
     //Movie Titles
-    <string name="guardians_of_the_galaxy_title" translatable="false">Guardians of the Galaxy</string>
-    <string name="grand_hotel_budapest_title" translatable="false">The Grand Budapest Hotel</string>
-    <string name="what_we_do_in_the_shadows_title" translatable="false">What We Do in the Shadows</string>
-    <string name="gone_with_the_wind_title" translatable="false">Gone With the Wind</string>
-    <string name="iron_man_title" translatable="false">Iron Man</string>
-    <string name="thor_ragnarok_title" translatable="false">Thor: Ragnarok</string>
-    <string name="knives_out_title" translatable="false">Knives Out</string>
+    <string name="guardians_of_the_galaxy_title">Guardians of the Galaxy</string>
+    <string name="grand_hotel_budapest_title">The Grand Budapest Hotel</string>
+    <string name="what_we_do_in_the_shadows_title">What We Do in the Shadows</string>
+    <string name="gone_with_the_wind_title">Gone With the Wind</string>
+    <string name="iron_man_title">Iron Man</string>
+    <string name="thor_ragnarok_title">Thor: Ragnarok</string>
+    <string name="knives_out_title">Knives Out</string>
     
     //Alert Dialog
     <string name="close_app_title">Quit</string>

@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/movie_details_poster"
-        android:contentDescription="@string/image_placeholder"
-        style="@style/MovieDescriptionPoster" />
+        style="@style/MovieDescriptionPoster"
+        android:contentDescription="@string/image_placeholder" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,14 +19,14 @@
 
         <TextView
             android:id="@+id/movie_details_title"
+            style="@style/MainTitle"
             android:layout_marginBottom="10dp"
-            android:text="@string/movie_title_placeholder"
-            style="@style/MainTitle" />
+            android:text="@string/movie_title_placeholder" />
 
         <TextView
             android:id="@+id/movie_details_description"
-            android:text="@string/movie_description_placeholder"
-            style="@style/MovieDescription" />
+            style="@style/MovieDescription"
+            android:text="@string/movie_description_placeholder" />
 
 
     </LinearLayout>
