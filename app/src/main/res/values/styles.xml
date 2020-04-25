@@ -8,4 +8,58 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Dark" parent="AppTheme">
+        <item name="colorPrimary">#0A39A3</item>
+        <item name="colorPrimaryDark">#203168</item>
+        <item name="colorAccent">#84B5C9</item>
+    </style>
+
+    <style name="Light" parent="AppTheme">
+        <item name="colorPrimary">#7AAD45</item>
+        <item name="colorPrimaryDark">#1E7017</item>
+        <item name="colorAccent">#D8D3C4</item>
+    </style>
+
+    <style name="MainTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/textMainTitle</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="MovieDescription">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/textMovieDescription</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MovieDescriptionPoster">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">300dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:background">@color/movieDescriptionPosterPlaceholder</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="MovieListTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/textMainTitle</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MovieListPoster">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/movieListPosterPlaceholder</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
 </resources>

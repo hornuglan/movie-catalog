@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="details_button">Детали</string>
+    <string name="invite_friend_button">Пригласить друга</string>
+    <string name="close_app_message">Вы действительно хотите выйти из приложения?</string>
+    <string name="close_app_title">Выход из приложения</string>
+    <string name="positive_button">Выйти</string>
+    <string name="negative_button">Отмена</string>
+    <string name="gone_with_the_wind_title">Унесенные Ветром</string>
+    <string name="grand_hotel_budapest_title">Отель Гранд Будапешт</string>
+    <string name="guardians_of_the_galaxy_title">Стражи Галактики</string>
+    <string name="iron_man_title">Железный человек</string>
+    <string name="knives_out_title">Достать ножи</string>
+    <string name="thor_ragnarok_title">Тор: Рагнарёк</string>
+    <string name="what_we_do_in_the_shadows_title">Реальные упыри</string>
+    <string name="change_theme_button">Поменять тему</string>
+</resources>
