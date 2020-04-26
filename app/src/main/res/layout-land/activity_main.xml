@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+
+    <Button
+        android:id="@+id/change_theme_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="20dp"
+        android:onClick="changeTheme"
+        android:text="@string/change_theme_button"
+        app:layout_constraintBottom_toTopOf="@+id/list_movies"
+        app:layout_constraintEnd_toStartOf="@+id/invite_friend_button"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/change_theme_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:onClick="changeTheme"
-            android:text="@string/change_theme_button" />
+    <Button
+        android:id="@+id/invite_friend_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:drawableStart="@drawable/ic_person_add_black_18dp"
+        android:drawablePadding="5dp"
+        android:text="@string/invite_friend_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/change_theme_button"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/invite_friend_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:drawableStart="@drawable/ic_person_add_black_18dp"
-            android:drawablePadding="5dp"
-            android:text="@string/invite_friend_button" />
 
-    </LinearLayout>
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_movies"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/list_view_item" />
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/change_theme_button"
+        tools:listitem="@layout/item_movie" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
