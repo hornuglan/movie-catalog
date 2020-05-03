@@ -7,11 +7,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val themeKey = "currentTheme"
 
-    val movies = arrayListOf(
+    private val movies = arrayListOf(
     MovieItem(R.string.guardians_of_the_galaxy_title, R.drawable.guardians_of_the_galaxy),
     MovieItem(R.string.grand_hotel_budapest_title, R.drawable.grand_budapest_hotel),
     MovieItem(R.string.gone_with_the_wind_title, R.drawable.gone_with_the_wind),
@@ -75,6 +74,9 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = MoviesAdapter(LayoutInflater.from(this), movies)
+
+        val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        recyclerView.addItemDecoration(itemDecoration)
     }
 
     fun openPreview(textView: TextView, movieTitle: String, moviePoster: Int) {

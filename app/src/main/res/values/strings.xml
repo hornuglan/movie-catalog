@@ -22,7 +22,7 @@
     <string name="iron_man_title">Iron Man</string>
     <string name="thor_ragnarok_title">Thor: Ragnarok</string>
     <string name="knives_out_title">Knives Out</string>
-    
+
     //Alert Dialog
     <string name="close_app_title">Quit</string>
     <string name="close_app_message">Do you really want to close the app?</string>

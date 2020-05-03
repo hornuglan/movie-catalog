@@ -11,4 +11,8 @@
 
     <color name="textMainTitle">#000000</color>
     <color name="textMovieDescription">#747070</color>
+    <color name="add_to_favourites_button">#797676</color>
+    <color name="added_to_favourites_button">#AA1010</color>
+    <color name="transparent_background">#00FFFFFF</color>
+    <color name="half_transparent_background">#A3FFFFFF</color>
 </resources>
