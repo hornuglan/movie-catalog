@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,13 @@ import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var inviteFriendButton: Button
+    private lateinit var goToFavouritesButton: Button
 
     private lateinit var sharedPreferences: SharedPreferences
     private val themeKey = "currentTheme"
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     MovieItem(R.string.thor_ragnarok_title, R.drawable.thor_ragnarok),
     MovieItem(R.string.knives_out_title, R.drawable.knives_out) )
 
-    private val favourites = arrayListOf<MovieItem>()
+    private val favourites: ArrayList<MovieItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,9 @@ class MainActivity : AppCompatActivity() {
 
         inviteFriendButton = findViewById(R.id.invite_friend_button)
         inviteFriendButton.setOnClickListener { inviteFriend() }
+
+        goToFavouritesButton = findViewById(R.id.favourites_button)
+        goToFavouritesButton.setOnClickListener { goToFavourites() }
     }
 
     override fun onBackPressed() {
@@ -122,6 +128,14 @@ class MainActivity : AppCompatActivity() {
     private fun inviteFriend() {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         intent.putExtra(Intent.EXTRA_TEXT, "Hello! Join me in this Movies Catalogue App:-)")
+        this.startActivity(intent)
+    }
+
+    private fun goToFavourites() {
+        val intent = Intent(this, FavouritesActivity::class.java)
+        val b = Bundle()
+        b.putSerializable("favouritesList", favourites)
+        intent.putExtras(b)
         this.startActivity(intent)
     }
 
