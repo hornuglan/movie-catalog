@@ -5,11 +5,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     MovieItem(R.string.iron_man_title, R.drawable.iron_man),
     MovieItem(R.string.thor_ragnarok_title, R.drawable.thor_ragnarok),
     MovieItem(R.string.knives_out_title, R.drawable.knives_out) )
+
+    private val favourites = arrayListOf<MovieItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,21 +77,46 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.list_movies)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = MoviesAdapter(LayoutInflater.from(this), movies)
+        recyclerView.adapter = MoviesAdapter(LayoutInflater.from(this), movies, object : MoviesAdapter.OnMovieClickListener {
+            override fun onDetailsButtonClickListener(movieItem: MovieItem) {
+                openPreview(movieItem.title, movieItem.poster)
+            }
+
+            override fun onFavouritesButtonClickListener(movieItem: MovieItem, addToFavouritesView: ImageView) {
+                addToFavourites(movieItem, addToFavouritesView)
+            }
+        })
 
         val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         recyclerView.addItemDecoration(itemDecoration)
     }
 
-    fun openPreview(textView: TextView, movieTitle: String, moviePoster: Int) {
+    fun openPreview(movieTitle: Int, moviePoster: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         val b = Bundle()
-        b.putString("movieTitle", movieTitle)
+        b.putInt("movieTitle", movieTitle)
         b.putInt("moviePoster", moviePoster)
         intent.putExtras(b)
         this.startActivity(intent)
 
-        textView.setTextColor(resources.getColor(R.color.clickedTitle))
+        //movieTitle.toColor(R.color.clickedTitle)
+    }
+
+    private fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView) {
+        when (addToFavouritesView.imageTintList) {
+            this.getColorStateList(R.color.add_to_favourites_button) -> {
+                Toast.makeText(this@MainActivity, "Added to Favourites", Toast.LENGTH_SHORT).show()
+                addToFavouritesView.imageTintList = this.getColorStateList(R.color.added_to_favourites_button)
+                favourites.add(item)
+                Log.d("MOVIE ITEM", "Added: $favourites")
+            }
+            this.getColorStateList(R.color.added_to_favourites_button) -> {
+                Toast.makeText(this@MainActivity, "Removed from Favourites", Toast.LENGTH_SHORT).show()
+                addToFavouritesView.imageTintList = this.getColorStateList(R.color.add_to_favourites_button)
+                favourites.remove(item)
+                Log.d("MOVIE ITEM", "Removed: $favourites")
+            }
+        }
     }
 
     private fun inviteFriend() {

@@ -32,11 +32,10 @@
         tools:ignore="Movie Poster"
         tools:src="@tools:sample/backgrounds/scenic" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/add_to_favourites_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/half_transparent_background"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_favorite_black_18dp"
         android:tint="@color/add_to_favourites_button"
         app:layout_constraintBottom_toBottomOf="@id/movie_poster"
