@@ -15,4 +15,7 @@
     <string name="thor_ragnarok_title">Тор: Рагнарёк</string>
     <string name="what_we_do_in_the_shadows_title">Реальные упыри</string>
     <string name="change_theme_button">Поменять тему</string>
+    <string name="invite_friend">Привет! Присоединяйся ко мне в приложении Movie Catalogue:-)</string>
+    <string name="go_to_favourites_button">Избранное</string>
+    <string name="empty_view_favourites">Ваш список избранного пуст</string>
 </resources>

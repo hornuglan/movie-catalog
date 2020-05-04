@@ -15,4 +15,7 @@
     <string name="thor_ragnarok_title">Thor : Ragnarok</string>
     <string name="what_we_do_in_the_shadows_title">Vampires en toute intimité</string>
     <string name="change_theme_button">Changer la theme</string>
+    <string name="invite_friend">Bonjour! Rejoignez-moi dans cette application de catalogue de films :-)</string>
+    <string name="go_to_favourites_button">Favoris</string>
+    <string name="empty_view_favourites">"Votre liste de favoris est vide "</string>
 </resources>

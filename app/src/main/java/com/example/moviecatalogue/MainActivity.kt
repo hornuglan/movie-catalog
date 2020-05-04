@@ -5,23 +5,37 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var listView: ListView
     private lateinit var inviteFriendButton: Button
-    private lateinit var changeThemeButton: Button
+    private lateinit var goToFavouritesButton: Button
 
     private lateinit var sharedPreferences: SharedPreferences
     private val themeKey = "currentTheme"
+
+    private val movies = arrayListOf(
+        MovieItem(R.string.guardians_of_the_galaxy_title, R.drawable.guardians_of_the_galaxy),
+        MovieItem(R.string.grand_hotel_budapest_title, R.drawable.grand_budapest_hotel),
+        MovieItem(R.string.gone_with_the_wind_title, R.drawable.gone_with_the_wind),
+        MovieItem(R.string.what_we_do_in_the_shadows_title, R.drawable.what_we_do_in_the_shadows),
+        MovieItem(R.string.iron_man_title, R.drawable.iron_man),
+        MovieItem(R.string.thor_ragnarok_title, R.drawable.thor_ragnarok),
+        MovieItem(R.string.knives_out_title, R.drawable.knives_out)
+    )
+
+    private val favourites: ArrayList<MovieItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,38 +47,18 @@ class MainActivity : AppCompatActivity() {
 
         when (sharedPreferences.getString(themeKey, "appTheme")) {
             "light" -> theme.applyStyle(R.style.Light, true)
-            "dark" ->  theme.applyStyle(R.style.Dark, true)
+            "dark" -> theme.applyStyle(R.style.Dark, true)
         }
 
         setContentView(R.layout.activity_main)
 
-        val movies = ArrayList<Movie>()
-        movies.add(
-            Movie(
-                R.string.guardians_of_the_galaxy_title,
-                R.drawable.guardians_of_the_galaxy
-            )
-        )
-        movies.add(Movie(R.string.grand_hotel_budapest_title, R.drawable.grand_budapest_hotel))
-        movies.add(Movie(R.string.gone_with_the_wind_title, R.drawable.gone_with_the_wind))
-        movies.add(
-            Movie(
-                R.string.what_we_do_in_the_shadows_title,
-                R.drawable.what_we_do_in_the_shadows
-            )
-        )
-        movies.add(Movie(R.string.iron_man_title, R.drawable.iron_man))
-        movies.add(Movie(R.string.thor_ragnarok_title, R.drawable.thor_ragnarok))
-        movies.add(Movie(R.string.knives_out_title, R.drawable.knives_out))
-
-        val adapter = MovieAdapter(this, movies)
-
-        listView = findViewById(R.id.list_movies)
-
-        listView.adapter = adapter
+        initRecycler()
 
         inviteFriendButton = findViewById(R.id.invite_friend_button)
         inviteFriendButton.setOnClickListener { inviteFriend() }
+
+        goToFavouritesButton = findViewById(R.id.favourites_button)
+        goToFavouritesButton.setOnClickListener { goToFavourites() }
     }
 
     override fun onBackPressed() {
@@ -84,26 +78,79 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun openPreview(textView: TextView, movieTitle: String, moviePoster: Int) {
+    private fun initRecycler() {
+        val recyclerView = findViewById<RecyclerView>(R.id.list_movies)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = MoviesAdapter(
+            LayoutInflater.from(this),
+            movies,
+            object : MoviesAdapter.OnMovieClickListener {
+                override fun onDetailsButtonClickListener(movieItem: MovieItem) {
+                    openPreview(movieItem.title, movieItem.poster)
+                }
+
+                override fun onFavouritesButtonClickListener(
+                    movieItem: MovieItem,
+                    addToFavouritesView: ImageView
+                ) {
+                    addToFavourites(movieItem, addToFavouritesView)
+                }
+            })
+
+        val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        recyclerView.addItemDecoration(itemDecoration)
+    }
+
+    //opens movie preview activity
+    fun openPreview(movieTitle: Int, moviePoster: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         val b = Bundle()
-        b.putString("movieTitle", movieTitle)
+        b.putInt("movieTitle", movieTitle)
         b.putInt("moviePoster", moviePoster)
         intent.putExtras(b)
         this.startActivity(intent)
-
-        textView.setTextColor(resources.getColor(R.color.clickedTitle))
     }
 
+    //1 click on heart image view adds movie to favourites list, 2 clicks - remove movie from favourites
+    private fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView) {
+        when (addToFavouritesView.imageTintList) {
+            this.getColorStateList(R.color.add_to_favourites_button) -> {
+                Toast.makeText(this@MainActivity, "Added to Favourites", Toast.LENGTH_SHORT).show()
+                addToFavouritesView.imageTintList =
+                    this.getColorStateList(R.color.added_to_favourites_button)
+                favourites.add(item)
+            }
+            this.getColorStateList(R.color.added_to_favourites_button) -> {
+                Toast.makeText(this@MainActivity, "Removed from Favourites", Toast.LENGTH_SHORT)
+                    .show()
+                addToFavouritesView.imageTintList =
+                    this.getColorStateList(R.color.add_to_favourites_button)
+                favourites.remove(item)
+            }
+        }
+    }
+
+    //sends ain invitation by e-mail
     private fun inviteFriend() {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
-        intent.putExtra(Intent.EXTRA_TEXT, "Hello! Join me in this Movies Catalogue App:-)")
+        intent.putExtra(Intent.EXTRA_TEXT, R.string.invite_friend)
         this.startActivity(intent)
     }
 
+    //opens favourites list activity
+    private fun goToFavourites() {
+        val intent = Intent(this, FavouritesActivity::class.java)
+        val b = Bundle()
+        b.putSerializable("favouritesList", favourites)
+        intent.putExtras(b)
+        this.startActivity(intent)
+    }
+
+    //changes app theme
     fun changeTheme(view: View) {
 
-        when(sharedPreferences.getString(themeKey, "appTheme")) {
+        when (sharedPreferences.getString(themeKey, "appTheme")) {
             "dark" -> sharedPreferences.edit().putString(themeKey, "light").apply()
             "light" -> sharedPreferences.edit().putString(themeKey, "dark").apply()
         }

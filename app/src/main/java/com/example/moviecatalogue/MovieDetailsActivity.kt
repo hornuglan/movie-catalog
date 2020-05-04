@@ -17,9 +17,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         val b = intent.extras
 
         movieTitle = findViewById(R.id.movie_details_title)
-        movieTitle.text = b?.getString("movieTitle")
+        movieTitle.setText(b!!.getInt("movieTitle"))
 
         moviePoster = findViewById(R.id.movie_details_poster)
-        moviePoster.setImageResource(b!!.getInt("moviePoster"))
+        moviePoster.setImageResource(b.getInt("moviePoster"))
     }
 }
