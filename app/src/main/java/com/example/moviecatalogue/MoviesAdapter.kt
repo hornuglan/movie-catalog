@@ -3,11 +3,14 @@ package com.example.moviecatalogue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesAdapter(val inflater: LayoutInflater, val items: ArrayList<MovieItem>, val listener: OnMovieClickListener) : RecyclerView.Adapter<MovieItemViewHolder>() {
+class MoviesAdapter(
+    private val inflater: LayoutInflater,
+    private val items: ArrayList<MovieItem>,
+    private val listener: OnMovieClickListener
+) : RecyclerView.Adapter<MovieItemViewHolder>() {
 
     override fun getItemCount() = items.size
 
@@ -18,8 +21,14 @@ class MoviesAdapter(val inflater: LayoutInflater, val items: ArrayList<MovieItem
         val detailsButton = holder.itemView.findViewById<View>(R.id.movie_details_button)
         detailsButton.setOnClickListener { listener.onDetailsButtonClickListener(item) }
 
-        val addToFavouritesView = holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
-        addToFavouritesView.setOnClickListener { listener.onFavouritesButtonClickListener(item, addToFavouritesView) }
+        val addToFavouritesView =
+            holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
+        addToFavouritesView.setOnClickListener {
+            listener.onFavouritesButtonClickListener(
+                item,
+                addToFavouritesView
+            )
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {

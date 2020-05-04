@@ -1,13 +1,11 @@
 package com.example.moviecatalogue
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,27 +26,45 @@ class FavouritesActivity : AppCompatActivity() {
 
     private fun initRecycler() {
         val recyclerView = findViewById<RecyclerView>(R.id.list_favourites)
+        val emptyView = findViewById<View>(R.id.empty_view)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = FavouritesAdapter(LayoutInflater.from(this), favourites, object : FavouritesAdapter.OnMovieClickListener {
-            override fun onDetailsButtonClickListener(movieItem: MovieItem) {
-                openPreview(movieItem.title, movieItem.poster)
-            }
+        if (favourites.isEmpty()) {
+            showEmptyView(recyclerView, emptyView)
+        } else {
+            recyclerView.adapter = FavouritesAdapter(
+                LayoutInflater.from(this),
+                favourites,
+                object : FavouritesAdapter.OnMovieClickListener {
+                    override fun onDetailsButtonClickListener(movieItem: MovieItem) {
+                        openPreview(movieItem.title, movieItem.poster)
+                    }
 
-            override fun onFavouritesButtonClickListener(
-                movieItem: MovieItem,
-                position: Int,
-                removeFromFavouritesView: ImageView
-            ) {
-                favourites.removeAt(position)
-                recyclerView.adapter?.notifyItemRemoved(position)
-            }
-        })
+                    override fun onFavouritesButtonClickListener(
+                        movieItem: MovieItem,
+                        position: Int,
+                        removeFromFavouritesView: ImageView
+                    ) {
+                        favourites.remove(movieItem)
+                        recyclerView.adapter?.notifyItemRemoved(position)
+                        if (favourites.isEmpty()) {
+                            showEmptyView(recyclerView, emptyView)
+                        }
+                    }
+                })
 
-        val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        recyclerView.addItemDecoration(itemDecoration)
+            val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+            recyclerView.addItemDecoration(itemDecoration)
+        }
     }
 
+    //hides recycler view and shows message if the list is empty
+    private fun showEmptyView(recyclerView: RecyclerView, emptyView: View) {
+        recyclerView.visibility = View.GONE
+        emptyView.visibility = View.VISIBLE
+    }
+
+    //opens movie preview activity from the favourites list
     fun openPreview(movieTitle: Int, moviePoster: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         val b = Bundle()

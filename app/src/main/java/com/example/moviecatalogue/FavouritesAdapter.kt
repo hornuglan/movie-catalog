@@ -6,7 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class FavouritesAdapter(val inflater: LayoutInflater, val items: ArrayList<MovieItem>, val listener: OnMovieClickListener) : RecyclerView.Adapter<com.example.moviecatalogue.MovieItemViewHolder>() {
+class FavouritesAdapter(
+    private val inflater: LayoutInflater,
+    private val items: ArrayList<MovieItem>,
+    private val listener: OnMovieClickListener
+) : RecyclerView.Adapter<com.example.moviecatalogue.MovieItemViewHolder>() {
 
     override fun getItemCount() = items.size
 
@@ -17,8 +21,15 @@ class FavouritesAdapter(val inflater: LayoutInflater, val items: ArrayList<Movie
         val detailsButton = holder.itemView.findViewById<View>(R.id.movie_details_button)
         detailsButton.setOnClickListener { listener.onDetailsButtonClickListener(item) }
 
-        val removeFromFavouritesView = holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
-        removeFromFavouritesView.setOnClickListener { listener.onFavouritesButtonClickListener(item, position, removeFromFavouritesView) }
+        val removeFromFavouritesView =
+            holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
+        removeFromFavouritesView.setOnClickListener {
+            listener.onFavouritesButtonClickListener(
+                item,
+                position,
+                removeFromFavouritesView
+            )
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
@@ -27,6 +38,10 @@ class FavouritesAdapter(val inflater: LayoutInflater, val items: ArrayList<Movie
 
     interface OnMovieClickListener {
         fun onDetailsButtonClickListener(movieItem: MovieItem)
-        fun onFavouritesButtonClickListener(movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView)
+        fun onFavouritesButtonClickListener(
+            movieItem: MovieItem,
+            position: Int,
+            removeFromFavouritesView: ImageView
+        )
     }
 }
