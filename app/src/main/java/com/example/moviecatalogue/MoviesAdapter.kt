@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 class MoviesAdapter(
     private val inflater: LayoutInflater,
     private val items: ArrayList<MovieItem>,
-    private val listener: OnMovieClickListener
+    private val listener: ((movieItem: MovieItem) -> Unit)?,
+    private val listener1: ((movieItem: MovieItem, addToFavouritesView: ImageView) -> Unit)?
+
 ) : RecyclerView.Adapter<MovieItemViewHolder>() {
 
     override fun getItemCount() = items.size
@@ -19,15 +21,19 @@ class MoviesAdapter(
         holder.bind(item)
 
         val detailsButton = holder.itemView.findViewById<View>(R.id.movie_details_button)
-        detailsButton.setOnClickListener { listener.onDetailsButtonClickListener(item) }
+        detailsButton.setOnClickListener {
+//            listener.onDetailsButtonClickListener(item)
+            listener?.invoke(items[position])
+        }
 
         val addToFavouritesView =
             holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
         addToFavouritesView.setOnClickListener {
-            listener.onFavouritesButtonClickListener(
-                item,
-                addToFavouritesView
-            )
+//            listener.onFavouritesButtonClickListener(
+//                item,
+//                addToFavouritesView
+//            )
+            listener1?.invoke(items[position], addToFavouritesView)
         }
     }
 
@@ -35,8 +41,8 @@ class MoviesAdapter(
         return MovieItemViewHolder(inflater.inflate(R.layout.item_movie, parent, false))
     }
 
-    interface OnMovieClickListener {
-        fun onDetailsButtonClickListener(movieItem: MovieItem)
-        fun onFavouritesButtonClickListener(movieItem: MovieItem, addToFavouritesView: ImageView)
-    }
+//    interface OnMovieClickListener {
+//        fun onDetailsButtonClickListener(movieItem: MovieItem)
+//        fun onFavouritesButtonClickListener(movieItem: MovieItem, addToFavouritesView: ImageView)
+//    }
 }

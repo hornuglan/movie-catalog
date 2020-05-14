@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 class FavouritesAdapter(
     private val inflater: LayoutInflater,
     private val items: ArrayList<MovieItem>,
-    private val listener: OnMovieClickListener
-) : RecyclerView.Adapter<com.example.moviecatalogue.MovieItemViewHolder>() {
+    private val listener: ((movieItem: MovieItem) -> Unit)?,
+    private val listener1: ((movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView) -> Unit)?
+) : RecyclerView.Adapter<MovieItemViewHolder>() {
 
     override fun getItemCount() = items.size
 
@@ -19,29 +20,34 @@ class FavouritesAdapter(
         holder.bind(item)
 
         val detailsButton = holder.itemView.findViewById<View>(R.id.movie_details_button)
-        detailsButton.setOnClickListener { listener.onDetailsButtonClickListener(item) }
+        detailsButton.setOnClickListener {
+//            listener.onDetailsButtonClickListener(item)
+            listener?.invoke(items[position])
+        }
 
         val removeFromFavouritesView =
             holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
         removeFromFavouritesView.setOnClickListener {
-            listener.onFavouritesButtonClickListener(
-                item,
-                position,
-                removeFromFavouritesView
-            )
+//            listener.onFavouritesButtonClickListener(
+//                item,
+//                position,
+//                removeFromFavouritesView
+//            )
+            listener1?.invoke(items[position], position, removeFromFavouritesView)
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(inflater.inflate(R.layout.item_movie, parent, false))
     }
 
-    interface OnMovieClickListener {
-        fun onDetailsButtonClickListener(movieItem: MovieItem)
-        fun onFavouritesButtonClickListener(
-            movieItem: MovieItem,
-            position: Int,
-            removeFromFavouritesView: ImageView
-        )
-    }
+//    interface OnMovieClickListener {
+//        fun onDetailsButtonClickListener(movieItem: MovieItem)
+//        fun onFavouritesButtonClickListener(
+//            movieItem: MovieItem,
+//            position: Int,
+//            removeFromFavouritesView: ImageView
+//        )
+//    }
 }

@@ -14,12 +14,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.io.Serializable
 
 
-class MainActivity : AppCompatActivity(), MoviesListFragment.OnMovieItemClickListener, FavouritesFragment.OnFavouritesClickListener {
-
-    private lateinit var inviteFriendButton: Button
-    private lateinit var goToFavouritesButton: Button
+class MainActivity :
+    AppCompatActivity(),
+    MoviesListFragment.OpenPreviewClickListener,
+    MoviesListFragment.AddToFavListener,
+    FavouritesFragment.PreviewFromFavClickListener,
+    FavouritesFragment.RemoveFromFavClickListener {
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -47,26 +50,19 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnMovieItemClickLis
         bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener{ item ->
             when(item.itemId) {
                 R.id.main_list -> {
-                    Toast.makeText(this, "Main List", Toast.LENGTH_SHORT).show()
                     supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.movie_list_frame, MoviesListFragment(this))
+                    .replace(R.id.movie_list_frame, MoviesListFragment())
                     .commit()
                 }
-                R.id.favourites_list -> {
-                    Toast.makeText(this, "Fav List", Toast.LENGTH_SHORT).show()
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.movie_list_frame, FavouritesFragment(this))
-                        .commit()
-                }
+                R.id.favourites_list -> { openFavouritesFragment(favourites) }
             }
             true
         })
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame, MoviesListFragment(this))
+            .replace(R.id.movie_list_frame, MoviesListFragment())
             .commit()
     }
 
@@ -100,30 +96,11 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnMovieItemClickLis
 
         dialog.show()
     }
-
-    //sends ain invitation by e-mail
-    private fun inviteFriend() {
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
-        intent.putExtra(Intent.EXTRA_TEXT, R.string.invite_friend)
-        this.startActivity(intent)
-    }
-
-    //opens movie details
-    override fun openPreview(movieTitle: Int, moviePoster: Int) {
-//        val fragmentClass = Fragment()
-//        val b = Bundle()
-//        b.putInt("movieTitle", movieTitle)
-//        b.putInt("moviePoster", moviePoster)
-//        fragmentClass.arguments = b
-
-        val b = Bundle()
-        b.putInt("movieTitle", movieTitle)
-        b.putInt("moviePoster", moviePoster)
-        val fragment = MovieDetailsFragment()
-        fragment.arguments = b
+    //opens movie details from the main movie list fragment
+    override fun openPreview(movieTitle: Int, moviePoster: Int){
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame, MovieDetailsFragment())
+            .replace(R.id.movie_list_frame, MovieDetailsFragment.newInstance(movieTitle, moviePoster), MovieDetailsFragment.TAG)
             .addToBackStack(null)
             .commit()
     }
@@ -132,13 +109,13 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnMovieItemClickLis
     override fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView) {
         when (addToFavouritesView.imageTintList) {
             this.getColorStateList(R.color.add_to_favourites_button) -> {
-                Toast.makeText(this, "Added to Favourites", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.added_to_fav, Toast.LENGTH_SHORT).show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.added_to_favourites_button)
                 favourites.add(item)
             }
             this.getColorStateList(R.color.added_to_favourites_button) -> {
-                Toast.makeText(this, "Removed from Favourites", Toast.LENGTH_SHORT)
+                Toast.makeText(this, R.string.removed_from_fav, Toast.LENGTH_SHORT)
                     .show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.add_to_favourites_button)
@@ -147,16 +124,31 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnMovieItemClickLis
         }
     }
 
+    //opens movie details from the favourites
     override fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int) {
         //open preview
     }
 
-    override fun removeFromFavourites() {
+    override fun removeFromFavourites(movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView) {
         //remove from fav
     }
 
+    private fun openFavouritesFragment(favourites: Serializable) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.movie_list_frame, FavouritesFragment.newInstance(favourites))
+            .commit()
+    }
+
+    //sends ain invitation by e-mail
+    private fun inviteFriend() {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
+        intent.putExtra(Intent.EXTRA_TEXT, R.string.invite_friend)
+        this.startActivity(intent)
+    }
+
     //changes app theme
-    fun changeTheme() {
+    private fun changeTheme() {
 
         when (sharedPreferences.getString(themeKey, "appTheme")) {
             "dark" -> sharedPreferences.edit().putString(themeKey, "light").apply()

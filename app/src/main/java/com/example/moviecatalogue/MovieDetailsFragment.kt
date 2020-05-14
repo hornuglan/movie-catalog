@@ -5,33 +5,51 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toolbar
 
 class MovieDetailsFragment : Fragment() {
+
+    private lateinit var movieTitle: TextView
+    private lateinit var moviePoster: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+        val root = inflater.inflate(R.layout.fragment_movie_details, container, false)
+
+        with(root) {
+            movieTitle = findViewById(R.id.movie_details_title)
+            moviePoster = findViewById(R.id.movie_details_poster)
+        }
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        movieTitle.setText(arguments?.getInt(MOVIE_TITLE)!!)
+        moviePoster.setImageResource(arguments?.getInt(MOVIE_POSTER)!!)
+    }
+
+    companion object {
+        const val TAG = "Movie Details Fragment"
+
+        const val MOVIE_TITLE = "movieTitle"
+        const val MOVIE_POSTER = "moviePoster"
+
+        fun newInstance(movieTitle: Int, moviePoster: Int) : MovieDetailsFragment {
+            val fragment = MovieDetailsFragment()
+
+            val bundle = Bundle()
+            bundle.putInt(MOVIE_TITLE, movieTitle)
+            bundle.putInt(MOVIE_POSTER, moviePoster)
+            fragment.arguments = bundle
+
+            return fragment
+        }
     }
 }
-
-//class MovieDetailsActivity : AppCompatActivity() {
-//
-//    private lateinit var movieTitle: TextView
-//    private lateinit var moviePoster: ImageView
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_movie_details)
-//
-//        val b = intent.extras
-//
-//        movieTitle = findViewById(R.id.movie_details_title)
-//        movieTitle.setText(b!!.getInt("movieTitle"))
-//
-//        moviePoster = findViewById(R.id.movie_details_poster)
-//        moviePoster.setImageResource(b.getInt("moviePoster"))
-//    }
-//}

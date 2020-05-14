@@ -18,4 +18,6 @@
     <string name="invite_friend">Bonjour! Rejoignez-moi dans cette application de catalogue de films :-)</string>
     <string name="go_to_favourites_button">Favoris</string>
     <string name="empty_view_favourites">"Votre liste de favoris est vide "</string>
+    <string name="added_to_fav">Ajouter aux Favoris</string>
+    <string name="removed_from_fav">Retirer des favoris</string>
 </resources>
