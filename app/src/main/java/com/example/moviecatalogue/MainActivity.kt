@@ -7,8 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -47,15 +45,17 @@ class MainActivity :
         setContentView(R.layout.activity_main)
 
         bottomNav = findViewById(R.id.bottom_navigation)
-        bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener{ item ->
-            when(item.itemId) {
+        bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
                 R.id.main_list -> {
                     supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.movie_list_frame, MoviesListFragment())
-                    .commit()
+                        .beginTransaction()
+                        .replace(R.id.movie_list_frame, MoviesListFragment())
+                        .commit()
                 }
-                R.id.favourites_list -> { openFavouritesFragment(favourites) }
+                R.id.favourites_list -> {
+                    openFavouritesFragment(favourites)
+                }
             }
             true
         })
@@ -73,7 +73,7 @@ class MainActivity :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val itemId = item.itemId
-        when(itemId) {
+        when (itemId) {
             R.id.invite_friend -> inviteFriend()
             R.id.change_theme -> changeTheme()
         }
@@ -96,11 +96,16 @@ class MainActivity :
 
         dialog.show()
     }
+
     //opens movie details from the main movie list fragment
-    override fun openPreview(movieTitle: Int, moviePoster: Int){
+    override fun openPreview(movieTitle: Int, moviePoster: Int) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame, MovieDetailsFragment.newInstance(movieTitle, moviePoster), MovieDetailsFragment.TAG)
+            .replace(
+                R.id.movie_list_frame,
+                MovieDetailsFragment.newInstance(movieTitle, moviePoster),
+                MovieDetailsFragment.TAG
+            )
             .addToBackStack(null)
             .commit()
     }
@@ -128,13 +133,21 @@ class MainActivity :
     override fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame, MovieDetailsFragment.newInstance(movieTitle, moviePoster), MovieDetailsFragment.TAG)
+            .replace(
+                R.id.movie_list_frame,
+                MovieDetailsFragment.newInstance(movieTitle, moviePoster),
+                MovieDetailsFragment.TAG
+            )
             .addToBackStack(null)
             .commit()
     }
 
-    override fun removeFromFavourites(movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView) {
-        //remove from fav
+    override fun removeFromFavourites(
+        movieItem: MovieItem,
+        position: Int,
+        removeFromFavouritesView: ImageView
+    ) {
+        //remove from fav - is executed in favorites fragment
     }
 
     private fun openFavouritesFragment(favourites: Serializable) {

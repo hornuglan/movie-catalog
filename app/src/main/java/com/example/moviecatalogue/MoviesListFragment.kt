@@ -14,11 +14,11 @@ class MoviesListFragment : Fragment() {
 
     var listener: OpenPreviewClickListener? = null
     var listener1: AddToFavListener? = null
-    
+
     companion object {
         const val TAG = "Movie List Fragment"
     }
-    
+
     private val movies = arrayListOf(
         MovieItem(R.string.guardians_of_the_galaxy_title, R.drawable.guardians_of_the_galaxy),
         MovieItem(R.string.grand_hotel_budapest_title, R.drawable.grand_budapest_hotel),
@@ -34,7 +34,6 @@ class MoviesListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_movies_list, container, false)
     }
 
@@ -48,7 +47,12 @@ class MoviesListFragment : Fragment() {
             LayoutInflater.from(activity),
             movies,
             { listener?.openPreview(it.title, it.poster) },
-            { movieItem: MovieItem, addToFavouritesView: ImageView -> listener1?.addToFavourites(movieItem, addToFavouritesView) }
+            { movieItem: MovieItem, addToFavouritesView: ImageView ->
+                listener1?.addToFavourites(
+                    movieItem,
+                    addToFavouritesView
+                )
+            }
         )
     }
 

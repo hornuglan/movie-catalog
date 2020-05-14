@@ -15,7 +15,6 @@ import java.lang.Exception
 class FavouritesFragment : Fragment() {
 
     var listener: PreviewFromFavClickListener? = null
-    var listener1: RemoveFromFavClickListener? = null
 
     private var favourites = arrayListOf<MovieItem>()
 
@@ -49,7 +48,6 @@ class FavouritesFragment : Fragment() {
                 favourites,
                 { listener?.openPreviewFromFavourites(it.title, it.poster) },
                 { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView ->
-//                    listener1?.removeFromFavourites(movieItem, position, removeFromFavouritesView)
                     favourites.remove(movieItem)
                     recyclerView.adapter?.notifyItemRemoved(position)
                     recyclerView.adapter?.notifyDataSetChanged()
@@ -75,13 +73,17 @@ class FavouritesFragment : Fragment() {
         recyclerView.visibility = View.GONE
         emptyView.visibility = View.VISIBLE
     }
-    
+
     interface PreviewFromFavClickListener {
         fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int)
     }
 
     interface RemoveFromFavClickListener {
-        fun removeFromFavourites(movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView)
+        fun removeFromFavourites(
+            movieItem: MovieItem,
+            position: Int,
+            removeFromFavouritesView: ImageView
+        )
     }
 
     companion object {
@@ -89,7 +91,7 @@ class FavouritesFragment : Fragment() {
 
         private const val FAVOURITES_LIST = "favouritesList"
 
-        fun newInstance(favouritesList: Serializable) : FavouritesFragment {
+        fun newInstance(favouritesList: Serializable): FavouritesFragment {
             val fragment = FavouritesFragment()
 
             val bundle = Bundle()

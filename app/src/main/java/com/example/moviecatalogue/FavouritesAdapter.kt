@@ -21,18 +21,12 @@ class FavouritesAdapter(
 
         val detailsButton = holder.itemView.findViewById<View>(R.id.movie_details_button)
         detailsButton.setOnClickListener {
-//            listener.onDetailsButtonClickListener(item)
             listener?.invoke(items[position])
         }
 
         val removeFromFavouritesView =
             holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
         removeFromFavouritesView.setOnClickListener {
-//            listener.onFavouritesButtonClickListener(
-//                item,
-//                position,
-//                removeFromFavouritesView
-//            )
             listener1?.invoke(items[position], position, removeFromFavouritesView)
         }
     }
@@ -40,13 +34,4 @@ class FavouritesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(inflater.inflate(R.layout.item_movie, parent, false))
     }
-
-//    interface OnMovieClickListener {
-//        fun onDetailsButtonClickListener(movieItem: MovieItem)
-//        fun onFavouritesButtonClickListener(
-//            movieItem: MovieItem,
-//            position: Int,
-//            removeFromFavouritesView: ImageView
-//        )
-//    }
 }

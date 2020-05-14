@@ -22,17 +22,12 @@ class MoviesAdapter(
 
         val detailsButton = holder.itemView.findViewById<View>(R.id.movie_details_button)
         detailsButton.setOnClickListener {
-//            listener.onDetailsButtonClickListener(item)
             listener?.invoke(items[position])
         }
 
         val addToFavouritesView =
             holder.itemView.findViewById<ImageView>(R.id.add_to_favourites_button)
         addToFavouritesView.setOnClickListener {
-//            listener.onFavouritesButtonClickListener(
-//                item,
-//                addToFavouritesView
-//            )
             listener1?.invoke(items[position], addToFavouritesView)
         }
     }
@@ -40,9 +35,4 @@ class MoviesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(inflater.inflate(R.layout.item_movie, parent, false))
     }
-
-//    interface OnMovieClickListener {
-//        fun onDetailsButtonClickListener(movieItem: MovieItem)
-//        fun onFavouritesButtonClickListener(movieItem: MovieItem, addToFavouritesView: ImageView)
-//    }
 }

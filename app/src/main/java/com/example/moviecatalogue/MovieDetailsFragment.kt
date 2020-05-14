@@ -1,13 +1,12 @@
 package com.example.moviecatalogue
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toolbar
+import androidx.fragment.app.Fragment
 
 class MovieDetailsFragment : Fragment() {
 
@@ -41,7 +40,7 @@ class MovieDetailsFragment : Fragment() {
         const val MOVIE_TITLE = "movieTitle"
         const val MOVIE_POSTER = "moviePoster"
 
-        fun newInstance(movieTitle: Int, moviePoster: Int) : MovieDetailsFragment {
+        fun newInstance(movieTitle: Int, moviePoster: Int): MovieDetailsFragment {
             val fragment = MovieDetailsFragment()
 
             val bundle = Bundle()
