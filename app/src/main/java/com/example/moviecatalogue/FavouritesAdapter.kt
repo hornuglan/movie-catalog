@@ -35,7 +35,6 @@ class FavouritesAdapter(
 //            )
             listener1?.invoke(items[position], position, removeFromFavouritesView)
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {

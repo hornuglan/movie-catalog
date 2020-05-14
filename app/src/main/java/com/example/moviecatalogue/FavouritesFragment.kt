@@ -37,7 +37,7 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        favourites = arguments?.getSerializable(FAVOURITES_LIST) as ArrayList<MovieItem>
         val recyclerView = view.findViewById<RecyclerView>(R.id.favourites_list_recyclerview)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -48,7 +48,15 @@ class FavouritesFragment : Fragment() {
                 LayoutInflater.from(activity),
                 favourites,
                 { listener?.openPreviewFromFavourites(it.title, it.poster) },
-                { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView -> listener1?.removeFromFavourites(movieItem, position, removeFromFavouritesView) }
+                { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView ->
+//                    listener1?.removeFromFavourites(movieItem, position, removeFromFavouritesView)
+                    favourites.remove(movieItem)
+                    recyclerView.adapter?.notifyItemRemoved(position)
+                    recyclerView.adapter?.notifyDataSetChanged()
+                    if (favourites.isEmpty()) {
+                        showEmptyView(recyclerView, emptyView)
+                    }
+                }
             )
         }
     }

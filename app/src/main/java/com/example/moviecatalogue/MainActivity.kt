@@ -126,7 +126,11 @@ class MainActivity :
 
     //opens movie details from the favourites
     override fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int) {
-        //open preview
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.movie_list_frame, MovieDetailsFragment.newInstance(movieTitle, moviePoster), MovieDetailsFragment.TAG)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun removeFromFavourites(movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView) {
