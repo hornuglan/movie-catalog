@@ -35,7 +35,8 @@
     <string name="positive_button">Yes</string>
     <string name="negative_button">Cancel</string>
 
-    //Favourites List
+    //Favourites List Snackbar
     <string name="added_to_fav">Added to Favourites</string>
     <string name="removed_from_fav">Removed from Favourites</string>
+    <string name="undo_string">Undo</string>
 </resources>

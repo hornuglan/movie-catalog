@@ -5,13 +5,16 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
 
 
@@ -114,14 +117,35 @@ class MainActivity :
     override fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView) {
         when (addToFavouritesView.imageTintList) {
             this.getColorStateList(R.color.add_to_favourites_button) -> {
-                Toast.makeText(this, R.string.added_to_fav, Toast.LENGTH_SHORT).show()
+                val parentView = findViewById<View>(R.id.movie_list_frame)
+                val snackbar = Snackbar
+                    .make(parentView, R.string.added_to_fav, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo_string) { _ ->
+                        addToFavouritesView.imageTintList =
+                            this.getColorStateList(R.color.add_to_favourites_button)
+                        favourites.remove(item)
+                    }
+                val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
+                params.anchorId = R.id.bottom_navigation
+                params.gravity = Gravity.TOP
+                snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.added_to_favourites_button)
                 favourites.add(item)
             }
             this.getColorStateList(R.color.added_to_favourites_button) -> {
-                Toast.makeText(this, R.string.removed_from_fav, Toast.LENGTH_SHORT)
-                    .show()
+                val parentView = findViewById<View>(R.id.movie_list_frame)
+                val snackbar = Snackbar
+                    .make(parentView, R.string.removed_from_fav, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo_string) { _ ->
+                        addToFavouritesView.imageTintList =
+                            this.getColorStateList(R.color.added_to_favourites_button)
+                        favourites.add(item)
+                    }
+                val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
+                params.anchorId = R.id.bottom_navigation
+                params.gravity = Gravity.TOP
+                snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.add_to_favourites_button)
                 favourites.remove(item)
