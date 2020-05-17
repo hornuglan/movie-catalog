@@ -8,6 +8,7 @@
         dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </string>
+    <string name="movie_poster_placeholder" translatable="false">Movie Poster</string>
     <string name="empty_view_favourites">Your favourites list is empty</string>
 
     //Buttons
@@ -33,4 +34,9 @@
     <string name="close_app_message">Do you really want to close the app?</string>
     <string name="positive_button">Yes</string>
     <string name="negative_button">Cancel</string>
+
+    //Favourites List Snackbar
+    <string name="added_to_fav">Added to Favourites</string>
+    <string name="removed_from_fav">Removed from Favourites</string>
+    <string name="undo_string">Undo</string>
 </resources>

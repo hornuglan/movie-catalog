@@ -18,4 +18,7 @@
     <string name="invite_friend">Привет! Присоединяйся ко мне в приложении Movie Catalogue:-)</string>
     <string name="go_to_favourites_button">Избранное</string>
     <string name="empty_view_favourites">Ваш список избранного пуст</string>
+    <string name="added_to_fav">Добавлено в Избранное</string>
+    <string name="removed_from_fav">Удалено из Избранного</string>
+    <string name="undo_string">Отмена</string>
 </resources>
