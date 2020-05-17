@@ -10,14 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FavouritesActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="Favourites"/>
-        <activity
-            android:name=".MovieDetailsActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="Movie Details"/>
-        <activity
             android:name=".MainActivity"
             android:configChanges="orientation">
             <intent-filter>
