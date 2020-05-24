@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -13,8 +14,12 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.example.moviecatalogue.model.MovieModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.Serializable
 
 
@@ -25,6 +30,7 @@ class MainActivity :
     FavouritesFragment.PreviewFromFavClickListener,
     FavouritesFragment.RemoveFromFavClickListener {
 
+    val items = mutableListOf<MovieItem1>()
     private lateinit var sharedPreferences: SharedPreferences
 
     private val favourites: ArrayList<MovieItem> = arrayListOf()
@@ -62,6 +68,33 @@ class MainActivity :
             }
             true
         })
+
+        //Api call
+        App.instance.api.getPopularMovies()
+            .enqueue(object : Callback<List<MovieModel>> {
+                override fun onFailure(call: Call<List<MovieModel>?>, t: Throwable) {}
+                override fun onResponse(
+                    call: Call<List<MovieModel>?>,
+                    response: Response<List<MovieModel>>
+                ) {
+                    items.clear()
+                    if (response.isSuccessful) {
+                        response.body()
+                            ?.forEach {
+                                items.add(
+                                    MovieItem1(
+                                        it.id.toLong(),
+                                        it.movieTitle,
+                                        it.moviePosterPath!!,
+                                        it.movieDescription
+                                    )
+                                )
+                            }
+                        Log.d("BEBEBE", "$response")
+                    }
+//                    adapter.notifyDataSetChanged()
+                }
+            })
 
         supportFragmentManager
             .beginTransaction()
