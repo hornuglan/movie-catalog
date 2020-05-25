@@ -1,7 +1,6 @@
-package com.example.moviecatalogue
+package com.example.moviecatalogue.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,12 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.model.MovieModel
+import com.example.moviecatalogue.App
+import com.example.moviecatalogue.data.MovieItem
+import com.example.moviecatalogue.ui.adapters.MoviesAdapter
+import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.network.MyResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,17 +46,18 @@ class MoviesListFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = MoviesAdapter(
-            LayoutInflater.from(activity),
-            items,
-            { listener?.openPreview(it.title, it.poster) },
-            { movieItem: MovieItem, addToFavouritesView: ImageView ->
-                listener1?.addToFavourites(
-                    movieItem,
-                    addToFavouritesView
-                )
-            }
-        )
+        recyclerView.adapter =
+            MoviesAdapter(
+                LayoutInflater.from(activity),
+                items,
+                { listener?.openPreview(it.title, it.poster) },
+                { movieItem: MovieItem, addToFavouritesView: ImageView ->
+                    listener1?.addToFavourites(
+                        movieItem,
+                        addToFavouritesView
+                    )
+                }
+            )
 
         loadMovies {
             movies.addAll(it)

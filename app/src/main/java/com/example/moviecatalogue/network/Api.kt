@@ -1,6 +1,6 @@
-package com.example.moviecatalogue
+package com.example.moviecatalogue.network
 
-import com.example.moviecatalogue.model.MovieModel
+import com.example.moviecatalogue.data.MovieModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

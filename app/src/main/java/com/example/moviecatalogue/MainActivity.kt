@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -14,12 +13,13 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.example.moviecatalogue.model.MovieModel
+import com.example.moviecatalogue.data.MovieItem
+import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.ui.FavouritesFragment
+import com.example.moviecatalogue.ui.MovieDetailsFragment
+import com.example.moviecatalogue.ui.MoviesListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.Serializable
 
 
@@ -59,7 +59,9 @@ class MainActivity :
                 R.id.main_list -> {
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.movie_list_frame, MoviesListFragment())
+                        .replace(R.id.movie_list_frame,
+                            MoviesListFragment()
+                        )
                         .commit()
                 }
                 R.id.favourites_list -> {
@@ -71,7 +73,9 @@ class MainActivity :
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame, MoviesListFragment())
+            .replace(R.id.movie_list_frame,
+                MoviesListFragment()
+            )
             .commit()
     }
 

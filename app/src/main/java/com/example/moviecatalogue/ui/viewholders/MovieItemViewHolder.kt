@@ -1,11 +1,12 @@
-package com.example.moviecatalogue
+package com.example.moviecatalogue.ui.viewholders
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moviecatalogue.model.MovieModel
+import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieItem
 
 class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val titleTv: TextView = itemView.findViewById(R.id.movie_title)

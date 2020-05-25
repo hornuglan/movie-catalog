@@ -1,4 +1,4 @@
-package com.example.moviecatalogue
+package com.example.moviecatalogue.data
 
 data class MovieItem (
     val id: Long,

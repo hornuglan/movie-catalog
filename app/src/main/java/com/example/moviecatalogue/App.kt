@@ -1,6 +1,7 @@
 package com.example.moviecatalogue
 
 import android.app.Application
+import com.example.moviecatalogue.network.Api
 import com.example.moviecatalogue.utils.API_TOKEN
 import com.example.moviecatalogue.utils.TMDB_BASIC_URL
 import okhttp3.OkHttpClient

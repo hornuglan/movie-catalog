@@ -1,4 +1,4 @@
-package com.example.moviecatalogue
+package com.example.moviecatalogue.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.model.MovieModel
+import com.example.moviecatalogue.ui.adapters.FavouritesAdapter
+import com.example.moviecatalogue.data.MovieItem
+import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieModel
 import java.io.Serializable
 import java.lang.Exception
 
@@ -44,19 +47,20 @@ class FavouritesFragment : Fragment() {
         if (favourites.isEmpty()) {
             showEmptyView(recyclerView, emptyView)
         } else {
-            recyclerView.adapter = FavouritesAdapter(
-                LayoutInflater.from(activity),
-                favourites,
-                { listener?.openPreviewFromFavourites(it.title, it.poster) },
-                { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView ->
-                    favourites.remove(movieItem)
-                    recyclerView.adapter?.notifyItemRemoved(position)
-                    recyclerView.adapter?.notifyDataSetChanged()
-                    if (favourites.isEmpty()) {
-                        showEmptyView(recyclerView, emptyView)
+            recyclerView.adapter =
+                FavouritesAdapter(
+                    LayoutInflater.from(activity),
+                    favourites,
+                    { listener?.openPreviewFromFavourites(it.title, it.poster) },
+                    { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView ->
+                        favourites.remove(movieItem)
+                        recyclerView.adapter?.notifyItemRemoved(position)
+                        recyclerView.adapter?.notifyDataSetChanged()
+                        if (favourites.isEmpty()) {
+                            showEmptyView(recyclerView, emptyView)
+                        }
                     }
-                }
-            )
+                )
         }
     }
 
