@@ -16,7 +16,7 @@ class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         titleTv.text = item.title
 
         Glide.with(posterIv)
-            .load(item.poster)
+            .load(item.getPosterPath())
             .centerCrop()
             .into(posterIv)
     }

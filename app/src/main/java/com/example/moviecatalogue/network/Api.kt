@@ -8,7 +8,10 @@ import retrofit2.http.Query
 
 interface Api {
     @GET("movie/popular")
-    fun getPopularMovies(@Query("page") page: Int? = 1): Call<MyResponse>
+    fun getPopularMovies(
+        @Query("page") page: Int? = 1,
+        @Query("language") language: String? = "ru"
+    ): Call<MyResponse>
 
     @GET("movie/{id}")
     fun getMovieDetails(@Path("id") id: Int): Call<MovieModel>

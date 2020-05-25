@@ -24,13 +24,13 @@ class MoviesListFragment : Fragment() {
     var listener: OpenPreviewClickListener? = null
     var listener1: AddToFavListener? = null
 
-    val items: ArrayList<MovieModel> = arrayListOf()
+//    val items: ArrayList<MovieModel> = arrayListOf()
 
     companion object {
         const val TAG = "Movie List Fragment"
     }
 
-    private val movies = arrayListOf<MovieModel>()
+    private val movies = arrayListOf<MovieItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +49,7 @@ class MoviesListFragment : Fragment() {
         recyclerView.adapter =
             MoviesAdapter(
                 LayoutInflater.from(activity),
-                items,
+                movies,
                 { listener?.openPreview(it.title, it.poster) },
                 { movieItem: MovieItem, addToFavouritesView: ImageView ->
                     listener1?.addToFavourites(
@@ -58,12 +58,7 @@ class MoviesListFragment : Fragment() {
                     )
                 }
             )
-
-        loadMovies {
-            movies.addAll(it)
-            recyclerView.adapter.notifyItemRangeInserted(0, movies.size)
-            recyclerView.scrollToPosition(0)
-        }
+        loadMovies()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -90,7 +85,8 @@ class MoviesListFragment : Fragment() {
         fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView)
     }
 
-    fun loadMovies(callback: ((List<MovieModel>) -> Unit)?) {
+    fun loadMovies() {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
         App.instance.api.getPopularMovies()
             .enqueue(object : Callback<MyResponse> {
                 override fun onFailure(call: Call<MyResponse>, t: Throwable) {}
@@ -98,23 +94,21 @@ class MoviesListFragment : Fragment() {
                     call: Call<MyResponse>,
                     response: Response<MyResponse>
                 ) {
-                    items.clear()
+                    movies.clear()
                     if (response.isSuccessful) {
-                        val movies = response.body()?.results
-                        callback?.invoke(movies!!)
-//                            ?.forEach {
-//                                items.add(
-//                                    MovieItem(
-//                                        it.id.toLong(),
-//                                        it.movieTitle,
-//                                        it.moviePosterPath!!,
-//                                        it.movieDescription
-//                                    )
-//                                )
-//                            }
-//                        Log.d("BEBEBE", "$response")
+                        val results = response.body()?.results
+                            ?.forEach {
+                                movies.add(
+                                    MovieItem(
+                                        it.id.toLong(),
+                                        it.movieTitle,
+                                        it.moviePosterPath!!,
+                                        it.movieDescription
+                                    )
+                                )
+                            }
                     }
-//                    recyclerView.adapter.notifyDataSetChanged()
+                    recyclerView?.adapter?.notifyDataSetChanged()
                 }
             })
     }
