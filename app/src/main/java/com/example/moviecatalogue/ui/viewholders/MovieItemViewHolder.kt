@@ -17,6 +17,7 @@ class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         Glide.with(posterIv)
             .load(item.getPosterPath())
+            .placeholder(R.drawable.ic_broken_image_black_18dp)
             .centerCrop()
             .into(posterIv)
     }

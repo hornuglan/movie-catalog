@@ -11,7 +11,7 @@ interface Api {
     fun getPopularMovies(
         @Query("page") page: Int? = 1,
         @Query("language") language: String? = "ru"
-    ): Call<MyResponse>
+    ): Call<MoviesResponse>
 
     @GET("movie/{id}")
     fun getMovieDetails(@Path("id") id: Int): Call<MovieModel>

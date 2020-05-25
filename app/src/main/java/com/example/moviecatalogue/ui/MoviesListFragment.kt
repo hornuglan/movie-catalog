@@ -1,10 +1,12 @@
 package com.example.moviecatalogue.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +15,8 @@ import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.ui.adapters.MoviesAdapter
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.data.MovieModel
-import com.example.moviecatalogue.network.MyResponse
+import com.example.moviecatalogue.network.MoviesResponse
+import kotlinx.android.synthetic.main.fragment_movie_details.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,10 +27,9 @@ class MoviesListFragment : Fragment() {
     var listener: OpenPreviewClickListener? = null
     var listener1: AddToFavListener? = null
 
-//    val items: ArrayList<MovieModel> = arrayListOf()
-
     companion object {
         const val TAG = "Movie List Fragment"
+        const val MOVIES_PER_LOAD = 20
     }
 
     private val movies = arrayListOf<MovieItem>()
@@ -58,6 +60,22 @@ class MoviesListFragment : Fragment() {
                     )
                 }
             )
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var page = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (layoutManager.findLastVisibleItemPosition() == movies.size) {
+                    page++
+                    if (page == 1) {
+                        loadMovies()
+                    } else {
+                        loadNextPage(page)
+                    }
+                }
+                recyclerView.adapter?.notifyItemRangeInserted(movies.size + 1, movies.size + MOVIES_PER_LOAD)
+            }
+        })
+
         loadMovies()
     }
 
@@ -85,17 +103,22 @@ class MoviesListFragment : Fragment() {
         fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView)
     }
 
-    fun loadMovies() {
+    private fun loadMovies() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
+        val progressBar = view?.findViewById<ProgressBar>(R.id.movies_list_progress_bar)
+        recyclerView?.visibility = View.INVISIBLE
+        progressBar?.visibility = View.VISIBLE
         App.instance.api.getPopularMovies()
-            .enqueue(object : Callback<MyResponse> {
-                override fun onFailure(call: Call<MyResponse>, t: Throwable) {}
+            .enqueue(object : Callback<MoviesResponse> {
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {}
                 override fun onResponse(
-                    call: Call<MyResponse>,
-                    response: Response<MyResponse>
+                    call: Call<MoviesResponse>,
+                    response: Response<MoviesResponse>
                 ) {
                     movies.clear()
                     if (response.isSuccessful) {
+                        recyclerView?.visibility = View.VISIBLE
+                        progressBar?.visibility = View.GONE
                         val results = response.body()?.results
                             ?.forEach {
                                 movies.add(
@@ -107,6 +130,32 @@ class MoviesListFragment : Fragment() {
                                     )
                                 )
                             }
+                    }
+                    recyclerView?.adapter?.notifyDataSetChanged()
+                }
+            })
+    }
+
+    fun loadNextPage(page: Int) {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
+        App.instance.api.getPopularMovies(page)
+            .enqueue(object : Callback<MoviesResponse> {
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {}
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    response: Response<MoviesResponse>
+                ) {
+                    val results = response.body()?.results
+                        ?.map {
+                                MovieItem(
+                                    it.id.toLong(),
+                                    it.movieTitle,
+                                    it.moviePosterPath!!,
+                                    it.movieDescription
+                            )
+                        }?.toCollection(ArrayList())
+                    if (results != null) {
+                        movies.addAll(results)
                     }
                     recyclerView?.adapter?.notifyDataSetChanged()
                 }
