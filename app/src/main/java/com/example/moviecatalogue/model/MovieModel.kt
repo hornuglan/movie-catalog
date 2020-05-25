@@ -1,9 +1,12 @@
 package com.example.moviecatalogue.model
 
+import android.os.Parcelable
 import com.example.moviecatalogue.utils.TMDB_IMAGE_BASE_URL
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
+@Parcelize
 data class MovieModel(
     @SerializedName("id")
     val id: Int,
@@ -13,7 +16,7 @@ data class MovieModel(
     val moviePosterPath: String? = null,
     @SerializedName("overview")
     val movieDescription: String
-) : Serializable {
+) : Parcelable {
     fun getPosterPath() : String? {
         return if (moviePosterPath == null) {
             null

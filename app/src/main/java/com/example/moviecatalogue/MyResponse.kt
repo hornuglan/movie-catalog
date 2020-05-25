@@ -3,7 +3,7 @@ package com.example.moviecatalogue
 import com.example.moviecatalogue.model.MovieModel
 import com.google.gson.annotations.SerializedName
 
-data class Response(
+data class MyResponse(
     @SerializedName("page")
     val page: Int? = null,
     @SerializedName("results")

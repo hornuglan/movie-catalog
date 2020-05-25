@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviecatalogue.model.MovieModel
 
 class MoviesAdapter(
     private val inflater: LayoutInflater,

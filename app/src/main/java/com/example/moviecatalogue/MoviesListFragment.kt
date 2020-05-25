@@ -1,6 +1,7 @@
 package com.example.moviecatalogue
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,10 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviecatalogue.model.MovieModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.Exception
 
 class MoviesListFragment : Fragment() {
@@ -15,19 +20,13 @@ class MoviesListFragment : Fragment() {
     var listener: OpenPreviewClickListener? = null
     var listener1: AddToFavListener? = null
 
+    val items: ArrayList<MovieModel> = arrayListOf()
+
     companion object {
         const val TAG = "Movie List Fragment"
     }
 
-    private val movies = arrayListOf(
-        MovieItem(R.string.guardians_of_the_galaxy_title, R.drawable.guardians_of_the_galaxy),
-        MovieItem(R.string.grand_hotel_budapest_title, R.drawable.grand_budapest_hotel),
-        MovieItem(R.string.gone_with_the_wind_title, R.drawable.gone_with_the_wind),
-        MovieItem(R.string.what_we_do_in_the_shadows_title, R.drawable.what_we_do_in_the_shadows),
-        MovieItem(R.string.iron_man_title, R.drawable.iron_man),
-        MovieItem(R.string.thor_ragnarok_title, R.drawable.thor_ragnarok),
-        MovieItem(R.string.knives_out_title, R.drawable.knives_out)
-    )
+    private val movies = arrayListOf<MovieModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +44,7 @@ class MoviesListFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = MoviesAdapter(
             LayoutInflater.from(activity),
-            movies,
+            items,
             { listener?.openPreview(it.title, it.poster) },
             { movieItem: MovieItem, addToFavouritesView: ImageView ->
                 listener1?.addToFavourites(
@@ -54,6 +53,12 @@ class MoviesListFragment : Fragment() {
                 )
             }
         )
+
+        loadMovies {
+            movies.addAll(it)
+            recyclerView.adapter.notifyItemRangeInserted(0, movies.size)
+            recyclerView.scrollToPosition(0)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -73,10 +78,39 @@ class MoviesListFragment : Fragment() {
     }
 
     interface OpenPreviewClickListener {
-        fun openPreview(movieTitle: Int, moviePoster: Int)
+        fun openPreview(movieTitle: String, moviePoster: String)
     }
 
     interface AddToFavListener {
         fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView)
+    }
+
+    fun loadMovies(callback: ((List<MovieModel>) -> Unit)?) {
+        App.instance.api.getPopularMovies()
+            .enqueue(object : Callback<MyResponse> {
+                override fun onFailure(call: Call<MyResponse>, t: Throwable) {}
+                override fun onResponse(
+                    call: Call<MyResponse>,
+                    response: Response<MyResponse>
+                ) {
+                    items.clear()
+                    if (response.isSuccessful) {
+                        val movies = response.body()?.results
+                        callback?.invoke(movies!!)
+//                            ?.forEach {
+//                                items.add(
+//                                    MovieItem(
+//                                        it.id.toLong(),
+//                                        it.movieTitle,
+//                                        it.moviePosterPath!!,
+//                                        it.movieDescription
+//                                    )
+//                                )
+//                            }
+//                        Log.d("BEBEBE", "$response")
+                    }
+//                    recyclerView.adapter.notifyDataSetChanged()
+                }
+            })
     }
 }

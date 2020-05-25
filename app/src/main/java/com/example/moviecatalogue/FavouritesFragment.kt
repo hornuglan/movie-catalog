@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviecatalogue.model.MovieModel
 import java.io.Serializable
 import java.lang.Exception
 
@@ -75,12 +76,12 @@ class FavouritesFragment : Fragment() {
     }
 
     interface PreviewFromFavClickListener {
-        fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int)
+        fun openPreviewFromFavourites(movieTitle: String, moviePoster: String)
     }
 
     interface RemoveFromFavClickListener {
         fun removeFromFavourites(
-            movieItem: MovieItem,
+            movieItem: MovieModel,
             position: Int,
             removeFromFavouritesView: ImageView
         )

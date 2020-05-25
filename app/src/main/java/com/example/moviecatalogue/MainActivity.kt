@@ -30,7 +30,7 @@ class MainActivity :
     FavouritesFragment.PreviewFromFavClickListener,
     FavouritesFragment.RemoveFromFavClickListener {
 
-    val items = mutableListOf<MovieItem1>()
+    val items = mutableListOf<MovieItem>()
     private lateinit var sharedPreferences: SharedPreferences
 
     private val favourites: ArrayList<MovieItem> = arrayListOf()
@@ -68,33 +68,6 @@ class MainActivity :
             }
             true
         })
-
-        //Api call
-        App.instance.api.getPopularMovies()
-            .enqueue(object : Callback<List<MovieModel>> {
-                override fun onFailure(call: Call<List<MovieModel>?>, t: Throwable) {}
-                override fun onResponse(
-                    call: Call<List<MovieModel>?>,
-                    response: Response<List<MovieModel>>
-                ) {
-                    items.clear()
-                    if (response.isSuccessful) {
-                        response.body()
-                            ?.forEach {
-                                items.add(
-                                    MovieItem1(
-                                        it.id.toLong(),
-                                        it.movieTitle,
-                                        it.moviePosterPath!!,
-                                        it.movieDescription
-                                    )
-                                )
-                            }
-                        Log.d("BEBEBE", "$response")
-                    }
-//                    adapter.notifyDataSetChanged()
-                }
-            })
 
         supportFragmentManager
             .beginTransaction()
@@ -134,7 +107,7 @@ class MainActivity :
     }
 
     //opens movie details from the main movie list fragment
-    override fun openPreview(movieTitle: Int, moviePoster: Int) {
+    override fun openPreview(movieTitle: String, moviePoster: String) {
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -156,7 +129,7 @@ class MainActivity :
                     .setAction(R.string.undo_string) { _ ->
                         addToFavouritesView.imageTintList =
                             this.getColorStateList(R.color.add_to_favourites_button)
-                        favourites.remove(item)
+//                        favourites.remove(item)
                     }
                 val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
                 params.anchorId = R.id.bottom_navigation
@@ -164,7 +137,7 @@ class MainActivity :
                 snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.added_to_favourites_button)
-                favourites.add(item)
+//                favourites.add(item)
             }
             this.getColorStateList(R.color.added_to_favourites_button) -> {
                 val parentView = findViewById<View>(R.id.movie_list_frame)
@@ -173,7 +146,7 @@ class MainActivity :
                     .setAction(R.string.undo_string) { _ ->
                         addToFavouritesView.imageTintList =
                             this.getColorStateList(R.color.added_to_favourites_button)
-                        favourites.add(item)
+//                        favourites.add(item)
                     }
                 val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
                 params.anchorId = R.id.bottom_navigation
@@ -181,13 +154,13 @@ class MainActivity :
                 snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.add_to_favourites_button)
-                favourites.remove(item)
+//                favourites.remove(item)
             }
         }
     }
 
     //opens movie details from the favourites
-    override fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int) {
+    override fun openPreviewFromFavourites(movieTitle: String, moviePoster: String) {
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -200,7 +173,7 @@ class MainActivity :
     }
 
     override fun removeFromFavourites(
-        movieItem: MovieItem,
+        movieItem: MovieModel,
         position: Int,
         removeFromFavouritesView: ImageView
     ) {

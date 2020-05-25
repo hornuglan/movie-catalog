@@ -1,13 +1,6 @@
 package com.example.moviecatalogue
 
-import java.io.Serializable
-
-data class MovieItem(
-    val title: Int,
-    val poster: Int
-) : Serializable
-
-data class MovieItem1 (
+data class MovieItem (
     val id: Long,
     val title: String,
     val poster: String,

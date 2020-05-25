@@ -40,12 +40,12 @@ class MovieDetailsFragment : Fragment() {
         const val MOVIE_TITLE = "movieTitle"
         const val MOVIE_POSTER = "moviePoster"
 
-        fun newInstance(movieTitle: Int, moviePoster: Int): MovieDetailsFragment {
+        fun newInstance(movieTitle: String, moviePoster: String): MovieDetailsFragment {
             val fragment = MovieDetailsFragment()
 
             val bundle = Bundle()
-            bundle.putInt(MOVIE_TITLE, movieTitle)
-            bundle.putInt(MOVIE_POSTER, moviePoster)
+            bundle.putString(MOVIE_TITLE, movieTitle)
+            bundle.putString(MOVIE_POSTER, moviePoster)
             fragment.arguments = bundle
 
             return fragment
