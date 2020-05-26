@@ -125,7 +125,7 @@ class MoviesListFragment : Fragment() {
                                     MovieItem(
                                         it.id.toLong(),
                                         it.movieTitle,
-                                        it.moviePosterPath!!,
+                                        it.moviePosterPath.toString(),
                                         it.movieDescription
                                     )
                                 )
@@ -150,7 +150,7 @@ class MoviesListFragment : Fragment() {
                                 MovieItem(
                                     it.id.toLong(),
                                     it.movieTitle,
-                                    it.moviePosterPath!!,
+                                    it.moviePosterPath.toString(),
                                     it.movieDescription
                             )
                         }?.toCollection(ArrayList())
