@@ -16,7 +16,7 @@ data class MovieModel(
     @SerializedName("overview")
     val movieDescription: String
 ) : Parcelable {
-    fun getPosterPath() : String? {
+    fun getPosterPath(): String? {
         return if (moviePosterPath == null) {
             null
         } else {

@@ -59,7 +59,8 @@ class MainActivity :
                 R.id.main_list -> {
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.movie_list_frame,
+                        .replace(
+                            R.id.movie_list_frame,
                             MoviesListFragment()
                         )
                         .commit()
@@ -73,7 +74,8 @@ class MainActivity :
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame,
+            .replace(
+                R.id.movie_list_frame,
                 MoviesListFragment()
             )
             .commit()
@@ -133,7 +135,7 @@ class MainActivity :
                     .setAction(R.string.undo_string) { _ ->
                         addToFavouritesView.imageTintList =
                             this.getColorStateList(R.color.add_to_favourites_button)
-//                        favourites.remove(item)
+                        favourites.remove(item)
                     }
                 val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
                 params.anchorId = R.id.bottom_navigation
@@ -141,7 +143,7 @@ class MainActivity :
                 snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.added_to_favourites_button)
-//                favourites.add(item)
+                favourites.add(item)
             }
             this.getColorStateList(R.color.added_to_favourites_button) -> {
                 val parentView = findViewById<View>(R.id.movie_list_frame)
@@ -150,7 +152,7 @@ class MainActivity :
                     .setAction(R.string.undo_string) { _ ->
                         addToFavouritesView.imageTintList =
                             this.getColorStateList(R.color.added_to_favourites_button)
-//                        favourites.add(item)
+                        favourites.add(item)
                     }
                 val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
                 params.anchorId = R.id.bottom_navigation
@@ -158,7 +160,7 @@ class MainActivity :
                 snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.add_to_favourites_button)
-//                favourites.remove(item)
+                favourites.remove(item)
             }
         }
     }

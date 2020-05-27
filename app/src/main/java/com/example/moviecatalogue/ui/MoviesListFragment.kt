@@ -1,7 +1,6 @@
 package com.example.moviecatalogue.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,7 @@ import com.example.moviecatalogue.App
 import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.ui.adapters.MoviesAdapter
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.data.MovieModel
 import com.example.moviecatalogue.network.MoviesResponse
-import kotlinx.android.synthetic.main.fragment_movie_details.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -98,7 +95,10 @@ class MoviesListFragment : Fragment() {
                 if (layoutManager.findLastVisibleItemPosition() >= movies.size - LOAD_NEXT_PAGE_ELEMENTS && movies.size > 0) {
                     page++
                     loadNextPage(page)
-                    recyclerView.adapter?.notifyItemRangeInserted(movies.size + MOVIES_PER_LOAD, MOVIES_PER_LOAD)
+                    recyclerView.adapter?.notifyItemRangeInserted(
+                        movies.size + MOVIES_PER_LOAD,
+                        MOVIES_PER_LOAD
+                    )
                 }
             }
         })
@@ -149,11 +149,11 @@ class MoviesListFragment : Fragment() {
                 ) {
                     val results = response.body()?.results
                         ?.map {
-                                MovieItem(
-                                    it.id.toLong(),
-                                    it.movieTitle,
-                                    it.moviePosterPath.toString(),
-                                    it.movieDescription
+                            MovieItem(
+                                it.id.toLong(),
+                                it.movieTitle,
+                                it.moviePosterPath.toString(),
+                                it.movieDescription
                             )
                         }?.toCollection(ArrayList())
                     if (results != null) {
