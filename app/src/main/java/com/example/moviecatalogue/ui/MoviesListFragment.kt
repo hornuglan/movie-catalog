@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moviecatalogue.App
 import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.ui.adapters.MoviesAdapter
@@ -47,6 +48,7 @@ class MoviesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         loadMovies()
+        onSwipeRefresh()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,7 +68,7 @@ class MoviesListFragment : Fragment() {
     }
 
     interface OpenPreviewClickListener {
-        fun openPreview(movieTitle: String, moviePoster: String)
+        fun openPreview(item: MovieItem)
     }
 
     interface AddToFavListener {
@@ -81,7 +83,7 @@ class MoviesListFragment : Fragment() {
             MoviesAdapter(
                 LayoutInflater.from(activity),
                 movies,
-                { listener?.openPreview(it.title, it.poster) },
+                { listener?.openPreview(it) },
                 { movieItem: MovieItem, addToFavouritesView: ImageView ->
                     listener1?.addToFavourites(
                         movieItem,
@@ -160,5 +162,15 @@ class MoviesListFragment : Fragment() {
                     recyclerView?.adapter?.notifyDataSetChanged()
                 }
             })
+    }
+
+    private fun onSwipeRefresh() {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
+        val swipeRefresher = view?.findViewById<SwipeRefreshLayout>(R.id.swipe_refresher)
+        swipeRefresher?.setOnRefreshListener {
+            recyclerView?.adapter?.notifyItemRangeRemoved(0, movies.size)
+            loadMovies()
+            swipeRefresher.isRefreshing = false
+        }
     }
 }
