@@ -51,7 +51,7 @@ class FavouritesFragment : Fragment() {
                 FavouritesAdapter(
                     LayoutInflater.from(activity),
                     favourites,
-                    { listener?.openPreviewFromFavourites(it.title, it.poster) },
+                    { listener?.openPreviewFromFavourites(it) },
                     { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView ->
                         favourites.remove(movieItem)
                         recyclerView.adapter?.notifyItemRemoved(position)
@@ -80,7 +80,7 @@ class FavouritesFragment : Fragment() {
     }
 
     interface PreviewFromFavClickListener {
-        fun openPreviewFromFavourites(movieTitle: String, moviePoster: String)
+        fun openPreviewFromFavourites(item: MovieItem)
     }
 
     interface RemoveFromFavClickListener {

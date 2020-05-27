@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieItem
 
 class MovieDetailsFragment : Fragment() {
 
     private lateinit var movieTitle: TextView
     private lateinit var moviePoster: ImageView
+    private lateinit var movieDescription: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +26,7 @@ class MovieDetailsFragment : Fragment() {
         with(root) {
             movieTitle = findViewById(R.id.movie_details_title)
             moviePoster = findViewById(R.id.movie_details_poster)
+            movieDescription = findViewById(R.id.movie_details_description)
         }
 
         return root
@@ -31,22 +35,31 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieTitle.setText(arguments?.getInt(MOVIE_TITLE)!!)
-        moviePoster.setImageResource(arguments?.getInt(MOVIE_POSTER)!!)
+        val movieItem = arguments?.getParcelable(MOVIE_ITEM) ?: MovieItem(0, "", "", "")
+
+        movieTitle.text = movieItem.title
+        movieDescription.text = movieItem.description
+
+        Glide.with(view)
+            .load(movieItem.getPosterPath())
+            .placeholder(R.color.movieDescriptionPosterPlaceholder)
+            .fallback(R.drawable.ic_broken_image_black_18dp)
+            .error(R.drawable.ic_broken_image_black_18dp)
+            .centerCrop()
+            .into(moviePoster)
+
     }
 
     companion object {
         const val TAG = "Movie Details Fragment"
 
-        const val MOVIE_TITLE = "movieTitle"
-        const val MOVIE_POSTER = "moviePoster"
+        const val MOVIE_ITEM = "movieItem"
 
-        fun newInstance(movieTitle: String, moviePoster: String): MovieDetailsFragment {
+        fun newInstance(item: MovieItem): MovieDetailsFragment {
             val fragment = MovieDetailsFragment()
 
             val bundle = Bundle()
-            bundle.putString(MOVIE_TITLE, movieTitle)
-            bundle.putString(MOVIE_POSTER, moviePoster)
+            bundle.putParcelable(MOVIE_ITEM, item)
             fragment.arguments = bundle
 
             return fragment

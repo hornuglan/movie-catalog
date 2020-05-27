@@ -54,7 +54,7 @@ class MainActivity :
         setContentView(R.layout.activity_main)
 
         bottomNav = findViewById(R.id.bottom_navigation)
-        bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        bottomNav.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.main_list -> {
                     supportFragmentManager
@@ -69,7 +69,7 @@ class MainActivity :
                 }
             }
             true
-        })
+        }
 
         supportFragmentManager
             .beginTransaction()
@@ -111,12 +111,12 @@ class MainActivity :
     }
 
     //opens movie details from the main movie list fragment
-    override fun openPreview(movieTitle: String, moviePoster: String) {
+    override fun openPreview(item: MovieItem) {
         supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.movie_list_frame,
-                MovieDetailsFragment.newInstance(movieTitle, moviePoster),
+                MovieDetailsFragment.newInstance(item),
                 MovieDetailsFragment.TAG
             )
             .addToBackStack(null)
@@ -164,12 +164,12 @@ class MainActivity :
     }
 
     //opens movie details from the favourites
-    override fun openPreviewFromFavourites(movieTitle: String, moviePoster: String) {
+    override fun openPreviewFromFavourites(item: MovieItem) {
         supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.movie_list_frame,
-                MovieDetailsFragment.newInstance(movieTitle, moviePoster),
+                MovieDetailsFragment.newInstance(item),
                 MovieDetailsFragment.TAG
             )
             .addToBackStack(null)
