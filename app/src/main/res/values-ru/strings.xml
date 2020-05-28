@@ -7,13 +7,6 @@
     <string name="close_app_title">Выход из приложения</string>
     <string name="positive_button">Выйти</string>
     <string name="negative_button">Отмена</string>
-    <string name="gone_with_the_wind_title">Унесенные Ветром</string>
-    <string name="grand_hotel_budapest_title">Отель Гранд Будапешт</string>
-    <string name="guardians_of_the_galaxy_title">Стражи Галактики</string>
-    <string name="iron_man_title">Железный человек</string>
-    <string name="knives_out_title">Достать ножи</string>
-    <string name="thor_ragnarok_title">Тор: Рагнарёк</string>
-    <string name="what_we_do_in_the_shadows_title">Реальные упыри</string>
     <string name="change_theme_button">Поменять тему</string>
     <string name="invite_friend">Привет! Присоединяйся ко мне в приложении Movie Catalogue:-)</string>
     <string name="go_to_favourites_button">Избранное</string>
@@ -21,4 +14,6 @@
     <string name="added_to_fav">Добавлено в Избранное</string>
     <string name="removed_from_fav">Удалено из Избранного</string>
     <string name="undo_string">Отмена</string>
+    <string name="main_list_nav">Главная страница</string>
+    <string name="favorites_list_nav">Список избранного</string>
 </resources>
