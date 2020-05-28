@@ -13,6 +13,11 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.example.moviecatalogue.data.MovieItem
+import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.ui.FavouritesFragment
+import com.example.moviecatalogue.ui.MovieDetailsFragment
+import com.example.moviecatalogue.ui.MoviesListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
@@ -25,6 +30,7 @@ class MainActivity :
     FavouritesFragment.PreviewFromFavClickListener,
     FavouritesFragment.RemoveFromFavClickListener {
 
+    val items = mutableListOf<MovieItem>()
     private lateinit var sharedPreferences: SharedPreferences
 
     private val favourites: ArrayList<MovieItem> = arrayListOf()
@@ -48,12 +54,15 @@ class MainActivity :
         setContentView(R.layout.activity_main)
 
         bottomNav = findViewById(R.id.bottom_navigation)
-        bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        bottomNav.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.main_list -> {
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.movie_list_frame, MoviesListFragment())
+                        .replace(
+                            R.id.movie_list_frame,
+                            MoviesListFragment()
+                        )
                         .commit()
                 }
                 R.id.favourites_list -> {
@@ -61,11 +70,14 @@ class MainActivity :
                 }
             }
             true
-        })
+        }
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.movie_list_frame, MoviesListFragment())
+            .replace(
+                R.id.movie_list_frame,
+                MoviesListFragment()
+            )
             .commit()
     }
 
@@ -101,12 +113,12 @@ class MainActivity :
     }
 
     //opens movie details from the main movie list fragment
-    override fun openPreview(movieTitle: Int, moviePoster: Int) {
+    override fun openPreview(item: MovieItem) {
         supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.movie_list_frame,
-                MovieDetailsFragment.newInstance(movieTitle, moviePoster),
+                MovieDetailsFragment.newInstance(item),
                 MovieDetailsFragment.TAG
             )
             .addToBackStack(null)
@@ -154,12 +166,12 @@ class MainActivity :
     }
 
     //opens movie details from the favourites
-    override fun openPreviewFromFavourites(movieTitle: Int, moviePoster: Int) {
+    override fun openPreviewFromFavourites(item: MovieItem) {
         supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.movie_list_frame,
-                MovieDetailsFragment.newInstance(movieTitle, moviePoster),
+                MovieDetailsFragment.newInstance(item),
                 MovieDetailsFragment.TAG
             )
             .addToBackStack(null)
@@ -167,7 +179,7 @@ class MainActivity :
     }
 
     override fun removeFromFavourites(
-        movieItem: MovieItem,
+        movieItem: MovieModel,
         position: Int,
         removeFromFavouritesView: ImageView
     ) {
