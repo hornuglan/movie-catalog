@@ -1,4 +1,4 @@
-package com.example.moviecatalogue.ui
+package com.example.moviecatalogue.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

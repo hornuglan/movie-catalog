@@ -1,4 +1,4 @@
-package com.example.moviecatalogue.ui
+package com.example.moviecatalogue.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -56,7 +56,8 @@ class MovieDetailsFragment : Fragment() {
         const val MOVIE_ITEM = "movieItem"
 
         fun newInstance(item: MovieItem): MovieDetailsFragment {
-            val fragment = MovieDetailsFragment()
+            val fragment =
+                MovieDetailsFragment()
 
             val bundle = Bundle()
             bundle.putParcelable(MOVIE_ITEM, item)

@@ -1,4 +1,4 @@
-package com.example.moviecatalogue.ui
+package com.example.moviecatalogue.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -97,7 +97,8 @@ class FavouritesFragment : Fragment() {
         private const val FAVOURITES_LIST = "favouritesList"
 
         fun newInstance(favouritesList: Serializable): FavouritesFragment {
-            val fragment = FavouritesFragment()
+            val fragment =
+                FavouritesFragment()
 
             val bundle = Bundle()
             bundle.putSerializable(FAVOURITES_LIST, favouritesList)
