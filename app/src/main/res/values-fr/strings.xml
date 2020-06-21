@@ -16,4 +16,7 @@
     <string name="undo_string">Annuler</string>
     <string name="main_list_nav">"Liste principale "</string>
     <string name="favorites_list_nav">Liste des favoris</string>
+    <string name="error_message">Response error</string>
+    <string name="retry">Retry</string>
+    <string name="something_went_wrong">Something went wrong :(</string>
 </resources>

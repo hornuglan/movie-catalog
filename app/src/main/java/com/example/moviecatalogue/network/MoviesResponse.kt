@@ -1,5 +1,6 @@
 package com.example.moviecatalogue.network
 
+import com.example.moviecatalogue.R
 import com.example.moviecatalogue.data.MovieModel
 import com.google.gson.annotations.SerializedName
 
@@ -11,5 +12,8 @@ data class MoviesResponse(
     @SerializedName("total_results")
     val totalResults: Int = 0,
     @SerializedName("total_pages")
-    val totalPages: Int = 0
-)
+    val totalPages: Int = 0,
+    val errorMessage: String = "Error"
+) {
+    fun isSuccessful(): Boolean = results!!.isNotEmpty()
+}

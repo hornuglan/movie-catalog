@@ -34,4 +34,10 @@
     <string name="added_to_fav">Added to Favourites</string>
     <string name="removed_from_fav">Removed from Favourites</string>
     <string name="undo_string">Undo</string>
+    <string name="error_message">Response error</string>
+
+    //Exceptions
+    <string name="unknown_viewModel" translatable="false">"Unknown ViewModel class"</string>
+    <string name="retry">Retry</string>
+    <string name="something_went_wrong">Something went wrong :(</string>
 </resources>

@@ -2,30 +2,43 @@ package com.example.moviecatalogue.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.data.MoviesRepository
+import com.example.moviecatalogue.network.GetMoviesCallback
 
-class MoviesListViewModel(message: String?) : ViewModel() {
-    private val errorLiveData = MutableLiveData<String?>()
-    val error: LiveData<String?> = errorLiveData
+class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel() {
+    private val moviesData = MutableLiveData<List<MovieModel>>()
+    val movies: LiveData<List<MovieModel>> = moviesData
 
-    private val toastLiveData = MutableLiveData<String?>()
-    val toast: LiveData<String?> = toastLiveData
+    private val messageErrorData = MutableLiveData<Any>()
+    val messageError: LiveData<Any> = messageErrorData
 
-    private val moviesLiveData = MutableLiveData<List<MovieModel>>()
-//    val movies: LiveData<List<MovieModel>> = Transformations.map(moviesLiveData, ::addInfo)
-//    val favourites: LiveData<List<MovieModel>> = Transformations.map(moviesLiveData, ::filterFav)
+    private val isMoviesLoadingData = MutableLiveData<Boolean>()
+    val isMoviesLoading: LiveData<Boolean> = isMoviesLoadingData
 
-    private val selectedMovieLiveData = MutableLiveData<MovieModel>()
-    val selectedMovie: LiveData<MovieModel> = selectedMovieLiveData
+    private val movieDetailsData = MutableLiveData<MovieModel>()
+    val movieDetails: LiveData<MovieModel> = movieDetailsData
 
-    private val swipeRefreshLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
-    val swipeRefresher: LiveData<Boolean> = swipeRefreshLiveData
+    var page = 1
+    fun loadMovies() {
+        isMoviesLoadingData.postValue(true)
+        repository.getMovies(page++, object : GetMoviesCallback<MovieModel> {
+            override fun onError(error: String?) {
+                isMoviesLoadingData.postValue(false)
+                messageErrorData.postValue(error)
+            }
 
-    init {
-        if (message != null) {
-            toastLiveData.postValue(message)
-        }
+            override fun onSuccess(data: List<MovieModel>?) {
+                isMoviesLoadingData.postValue(false)
+                if (data != null) {
+                    moviesData.postValue(data)
+                }
+            }
+        })
+    }
+
+    fun openMovieDetails(movie: MovieModel?) {
+        movieDetailsData.postValue(movie)
     }
 }

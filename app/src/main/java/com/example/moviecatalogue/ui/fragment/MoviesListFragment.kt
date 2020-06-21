@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,7 +18,10 @@ import com.example.moviecatalogue.App
 import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.ui.adapters.MoviesAdapter
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieModel
 import com.example.moviecatalogue.network.MoviesResponse
+import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
+import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +31,8 @@ class MoviesListFragment : Fragment() {
 
     var listener: OpenPreviewClickListener? = null
     var listener1: AddToFavListener? = null
+
+    private var viewModel: MoviesListViewModel? = null
 
     companion object {
         const val TAG = "Movie List Fragment"
@@ -43,8 +52,9 @@ class MoviesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeViewModel()
         initRecycler()
-        loadMovies()
+//        loadMovies()
         onSwipeRefresh()
     }
 
@@ -70,6 +80,44 @@ class MoviesListFragment : Fragment() {
 
     interface AddToFavListener {
         fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView)
+    }
+
+    private fun initializeViewModel() {
+        viewModel = activity?.let {
+            ViewModelProvider(it, MovieListViewModelFactory(App.instance.repository)).get(
+                MoviesListViewModel::class.java
+            )
+        }
+        viewModel?.movies?.observe(this, renderMovies)
+        viewModel?.isMoviesLoading?.observe(this, isMoviesLoadingObserver)
+        viewModel?.messageError?.observe(this, messageErrorObserver)
+        viewModel?.movieDetails?.observe(this, onMovieClicked)
+    }
+
+    private val renderMovies = Observer<List<MovieModel>> {
+        val progressBar = view?.findViewById<ProgressBar>(R.id.movies_list_progress_bar)
+        progressBar?.visibility = View.GONE
+    }
+
+    private val onMovieClicked = Observer<MovieModel> {
+        viewModel?.openMovieDetails(it)
+    }
+
+    private val isMoviesLoadingObserver = Observer<Boolean> {
+        val progressBar = view?.findViewById<ProgressBar>(R.id.movies_list_progress_bar)
+        val visibility = if (it) View.VISIBLE else View.GONE
+        progressBar?.visibility = visibility
+    }
+
+    private val messageErrorObserver = Observer<Any> {
+        val errorText = view?.findViewById<TextView>(R.id.loading_error_text_view)
+        val retryButton = view?.findViewById<Button>(R.id.retry_button)
+        errorText?.visibility = View.VISIBLE
+        retryButton?.visibility = View.VISIBLE
+        retryButton?.setOnClickListener {
+            errorText?.visibility = View.GONE
+            retryButton.visibility = View.GONE
+        }
     }
 
     private fun initRecycler() {
