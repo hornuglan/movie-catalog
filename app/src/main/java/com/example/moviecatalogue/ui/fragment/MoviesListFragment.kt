@@ -33,6 +33,7 @@ class MoviesListFragment : Fragment() {
     var listener1: AddToFavListener? = null
 
     private var viewModel: MoviesListViewModel? = null
+    private var adapter: MoviesAdapter? = null
 
     companion object {
         const val TAG = "Movie List Fragment"
@@ -55,6 +56,7 @@ class MoviesListFragment : Fragment() {
         initializeViewModel()
         initRecycler()
 //        loadMovies()
+        viewModel?.loadMovies()
         onSwipeRefresh()
     }
 
@@ -82,12 +84,48 @@ class MoviesListFragment : Fragment() {
         fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView)
     }
 
+    private fun initRecycler() {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
+        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = layoutManager
+        adapter =  MoviesAdapter(
+            LayoutInflater.from(activity),
+            movies,
+            { listener?.openPreview(it) },
+            { movieItem: MovieItem, addToFavouritesView: ImageView ->
+                listener1?.addToFavourites(
+                    movieItem,
+                    addToFavouritesView
+                )
+            }
+        )
+        recyclerView?.adapter = adapter
+
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var page = 1
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (layoutManager.findLastVisibleItemPosition() >= movies.size - LOAD_NEXT_PAGE_ELEMENTS && movies.size > 0) {
+//                    page++
+//                    loadNextPage(page)
+//                    recyclerView.adapter?.notifyItemRangeInserted(
+//                        movies.size + MOVIES_PER_LOAD,
+//                        MOVIES_PER_LOAD
+//                    )
+                    viewModel?.loadMovies()
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
+            }
+        })
+    }
+
+
     private fun initializeViewModel() {
         viewModel = activity?.let {
             ViewModelProvider(it, MovieListViewModelFactory(App.instance.repository)).get(
                 MoviesListViewModel::class.java
             )
         }
+        if (movies.isEmpty()) viewModel?.loadMovies()
         viewModel?.movies?.observe(this, renderMovies)
         viewModel?.isMoviesLoading?.observe(this, isMoviesLoadingObserver)
         viewModel?.messageError?.observe(this, messageErrorObserver)
@@ -97,6 +135,7 @@ class MoviesListFragment : Fragment() {
     private val renderMovies = Observer<List<MovieModel>> {
         val progressBar = view?.findViewById<ProgressBar>(R.id.movies_list_progress_bar)
         progressBar?.visibility = View.GONE
+        adapter?.updateRecyclerView(it)
     }
 
     private val onMovieClicked = Observer<MovieModel> {
@@ -115,43 +154,11 @@ class MoviesListFragment : Fragment() {
         errorText?.visibility = View.VISIBLE
         retryButton?.visibility = View.VISIBLE
         retryButton?.setOnClickListener {
+            viewModel?.loadMovies()
             errorText?.visibility = View.GONE
             retryButton.visibility = View.GONE
         }
     }
-
-    private fun initRecycler() {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
-        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        recyclerView?.layoutManager = layoutManager
-        recyclerView?.adapter =
-            MoviesAdapter(
-                LayoutInflater.from(activity),
-                movies,
-                { listener?.openPreview(it) },
-                { movieItem: MovieItem, addToFavouritesView: ImageView ->
-                    listener1?.addToFavourites(
-                        movieItem,
-                        addToFavouritesView
-                    )
-                }
-            )
-
-        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var page = 1
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (layoutManager.findLastVisibleItemPosition() >= movies.size - LOAD_NEXT_PAGE_ELEMENTS && movies.size > 0) {
-                    page++
-                    loadNextPage(page)
-                    recyclerView.adapter?.notifyItemRangeInserted(
-                        movies.size + MOVIES_PER_LOAD,
-                        MOVIES_PER_LOAD
-                    )
-                }
-            }
-        })
-    }
-
 
     private fun loadMovies() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
@@ -217,7 +224,8 @@ class MoviesListFragment : Fragment() {
         val swipeRefresher = view?.findViewById<SwipeRefreshLayout>(R.id.swipe_refresher)
         swipeRefresher?.setOnRefreshListener {
             recyclerView?.adapter?.notifyItemRangeRemoved(0, movies.size)
-            loadMovies()
+//            loadMovies()
+            viewModel?.loadMovies()
             swipeRefresher.isRefreshing = false
         }
     }

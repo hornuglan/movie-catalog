@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.ui.viewholders.MovieItemViewHolder
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.data.MovieItem
+import com.example.moviecatalogue.data.MovieModel
 
 class MoviesAdapter(
     private val inflater: LayoutInflater,
-    private val items: ArrayList<MovieItem>,
+    private var items: ArrayList<MovieItem>,
     private val listener: ((movieItem: MovieItem) -> Unit)?,
     private val listener1: ((movieItem: MovieItem, addToFavouritesView: ImageView) -> Unit)?
 
@@ -43,5 +44,18 @@ class MoviesAdapter(
                 false
             )
         )
+    }
+
+    fun updateRecyclerView(data: List<MovieModel>) {
+        items =
+            data.map { it ->
+                MovieItem(
+                    it.id.toLong(),
+                    it.movieTitle,
+                    it.moviePosterPath.toString(),
+                    it.movieDescription
+                )
+            } as ArrayList<MovieItem>
+        notifyDataSetChanged()
     }
 }
