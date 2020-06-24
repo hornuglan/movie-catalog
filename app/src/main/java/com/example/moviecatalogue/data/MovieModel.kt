@@ -21,11 +21,7 @@ data class MovieModel(
     val movieDescription: String
 ) : Parcelable {
     fun getPosterPath(): String? {
-        return if (moviePosterPath == null) {
-            null
-        } else {
-            "${TMDB_IMAGE_BASE_URL}$moviePosterPath"
-        }
+        return moviePosterPath
     }
 }
 

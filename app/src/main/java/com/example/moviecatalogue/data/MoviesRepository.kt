@@ -11,7 +11,7 @@ class MoviesRepository(val api: Api) : MoviesDataSource {
     private var call: Call<MoviesResponse>? = null
 
     override fun getMovies(page: Int, callback: GetMoviesCallback<MovieModel>) {
-        call = api.getPopularMovies(1, "ru")
+        call = api.getPopularMovies(page, "ru")
         call?.enqueue(object : Callback<MoviesResponse> {
             override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
                 callback.onError(t.message)

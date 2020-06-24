@@ -1,6 +1,7 @@
 package com.example.moviecatalogue.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,7 +92,18 @@ class MoviesListFragment : Fragment() {
         adapter =  MoviesAdapter(
             LayoutInflater.from(activity),
             movies,
-            { listener?.openPreview(it) },
+//            { listener?.openPreview(it) },
+            {
+                viewModel?.openMovieDetails(
+                    MovieModel(
+                        it.id.toInt(),
+                        it.title,
+                        it.getPosterPath().toString(),
+                        it.description
+                    )
+                )
+                listener?.openPreview(it)
+            },
             { movieItem: MovieItem, addToFavouritesView: ImageView ->
                 listener1?.addToFavourites(
                     movieItem,
@@ -102,17 +114,24 @@ class MoviesListFragment : Fragment() {
         recyclerView?.adapter = adapter
 
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var page = 1
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (layoutManager.findLastVisibleItemPosition() >= movies.size - LOAD_NEXT_PAGE_ELEMENTS && movies.size > 0) {
+                Log.d("Hello", "Suka")
+                if (layoutManager.findLastVisibleItemPosition() >= viewModel?.movies?.value?.size!! - LOAD_NEXT_PAGE_ELEMENTS && viewModel?.movies?.value?.size!! > 0) {
 //                    page++
 //                    loadNextPage(page)
 //                    recyclerView.adapter?.notifyItemRangeInserted(
 //                        movies.size + MOVIES_PER_LOAD,
 //                        MOVIES_PER_LOAD
 //                    )
-                    viewModel?.loadMovies()
-                    recyclerView.adapter?.notifyDataSetChanged()
+                    viewModel?.loadNextPage()
+                    Log.d("Suka position", "${layoutManager.findLastVisibleItemPosition()}")
+                    Log.d("Suka size", "${viewModel?.movies?.value?.size}")
+//                    viewModel?.movies?.value?.size?.plus(MOVIES_PER_LOAD)?.let {
+//                        recyclerView.adapter?.notifyItemRangeInserted(
+//                            it,
+//                            MOVIES_PER_LOAD
+//                        )
+//                    }
                 }
             }
         })
@@ -149,12 +168,15 @@ class MoviesListFragment : Fragment() {
     }
 
     private val messageErrorObserver = Observer<Any> {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
         val errorText = view?.findViewById<TextView>(R.id.loading_error_text_view)
         val retryButton = view?.findViewById<Button>(R.id.retry_button)
+        recyclerView?.visibility = View.GONE
         errorText?.visibility = View.VISIBLE
         retryButton?.visibility = View.VISIBLE
         retryButton?.setOnClickListener {
             viewModel?.loadMovies()
+            recyclerView?.visibility = View.VISIBLE
             errorText?.visibility = View.GONE
             retryButton.visibility = View.GONE
         }

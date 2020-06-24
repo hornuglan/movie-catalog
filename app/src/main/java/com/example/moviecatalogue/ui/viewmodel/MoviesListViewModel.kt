@@ -22,8 +22,25 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
     private val movieDetailsData = MutableLiveData<MovieModel>()
     val movieDetails: LiveData<MovieModel> = movieDetailsData
 
-    var page = 1
     fun loadMovies() {
+        isMoviesLoadingData.postValue(true)
+        repository.getMovies(1, object : GetMoviesCallback<MovieModel> {
+            override fun onError(error: String?) {
+                isMoviesLoadingData.postValue(false)
+                messageErrorData.postValue(error)
+            }
+
+            override fun onSuccess(newMovieList: List<MovieModel>?) {
+                isMoviesLoadingData.postValue(false)
+                if (newMovieList != null) {
+                    moviesData.postValue(newMovieList)
+                }
+            }
+        })
+    }
+
+    var page = 1
+    fun loadNextPage() {
         isMoviesLoadingData.postValue(true)
         repository.getMovies(page++, object : GetMoviesCallback<MovieModel> {
             override fun onError(error: String?) {
@@ -31,10 +48,12 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
                 messageErrorData.postValue(error)
             }
 
-            override fun onSuccess(data: List<MovieModel>?) {
+            override fun onSuccess(newMovieList: List<MovieModel>?) {
                 isMoviesLoadingData.postValue(false)
-                if (data != null) {
-                    moviesData.postValue(data)
+                if (newMovieList != null) {
+                    val oldMovieList = moviesData.value?.toMutableList()
+                    oldMovieList?.addAll(newMovieList)
+                    moviesData.postValue(oldMovieList)
                 }
             }
         })
