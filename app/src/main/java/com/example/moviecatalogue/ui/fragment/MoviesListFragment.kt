@@ -1,7 +1,6 @@
 package com.example.moviecatalogue.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moviecatalogue.App
-import com.example.moviecatalogue.data.MovieItem
-import com.example.moviecatalogue.ui.adapters.MoviesAdapter
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.data.MovieModel
-import com.example.moviecatalogue.network.MoviesResponse
+import com.example.moviecatalogue.ui.adapters.MoviesAdapter
 import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
 import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
 
 class MoviesListFragment : Fragment() {
 
@@ -56,7 +50,6 @@ class MoviesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeViewModel()
         initRecycler()
-//        loadMovies()
         viewModel?.loadMovies()
         onSwipeRefresh()
     }
@@ -89,10 +82,9 @@ class MoviesListFragment : Fragment() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView?.layoutManager = layoutManager
-        adapter =  MoviesAdapter(
+        adapter = MoviesAdapter(
             LayoutInflater.from(activity),
             movies,
-//            { listener?.openPreview(it) },
             {
                 viewModel?.openMovieDetails(
                     MovieModel(
@@ -115,23 +107,8 @@ class MoviesListFragment : Fragment() {
 
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                Log.d("Hello", "Suka")
                 if (layoutManager.findLastVisibleItemPosition() >= viewModel?.movies?.value?.size!! - LOAD_NEXT_PAGE_ELEMENTS && viewModel?.movies?.value?.size!! > 0) {
-//                    page++
-//                    loadNextPage(page)
-//                    recyclerView.adapter?.notifyItemRangeInserted(
-//                        movies.size + MOVIES_PER_LOAD,
-//                        MOVIES_PER_LOAD
-//                    )
                     viewModel?.loadNextPage()
-                    Log.d("Suka position", "${layoutManager.findLastVisibleItemPosition()}")
-                    Log.d("Suka size", "${viewModel?.movies?.value?.size}")
-//                    viewModel?.movies?.value?.size?.plus(MOVIES_PER_LOAD)?.let {
-//                        recyclerView.adapter?.notifyItemRangeInserted(
-//                            it,
-//                            MOVIES_PER_LOAD
-//                        )
-//                    }
                 }
             }
         })
@@ -182,71 +159,11 @@ class MoviesListFragment : Fragment() {
         }
     }
 
-    private fun loadMovies() {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
-        val progressBar = view?.findViewById<ProgressBar>(R.id.movies_list_progress_bar)
-        recyclerView?.visibility = View.INVISIBLE
-        progressBar?.visibility = View.VISIBLE
-        App.instance.api.getPopularMovies()
-            .enqueue(object : Callback<MoviesResponse> {
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {}
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    movies.clear()
-                    if (response.isSuccessful) {
-                        recyclerView?.visibility = View.VISIBLE
-                        progressBar?.visibility = View.GONE
-                        val results = response.body()?.results
-                            ?.forEach {
-                                movies.add(
-                                    MovieItem(
-                                        it.id.toLong(),
-                                        it.movieTitle,
-                                        it.moviePosterPath.toString(),
-                                        it.movieDescription
-                                    )
-                                )
-                            }
-                    }
-                    recyclerView?.adapter?.notifyDataSetChanged()
-                }
-            })
-    }
-
-    fun loadNextPage(page: Int) {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
-        App.instance.api.getPopularMovies(page)
-            .enqueue(object : Callback<MoviesResponse> {
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {}
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    val results = response.body()?.results
-                        ?.map {
-                            MovieItem(
-                                it.id.toLong(),
-                                it.movieTitle,
-                                it.moviePosterPath.toString(),
-                                it.movieDescription
-                            )
-                        }?.toCollection(ArrayList())
-                    if (results != null) {
-                        movies.addAll(results)
-                    }
-                    recyclerView?.adapter?.notifyDataSetChanged()
-                }
-            })
-    }
-
     private fun onSwipeRefresh() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.movie_list_recyclerview)
         val swipeRefresher = view?.findViewById<SwipeRefreshLayout>(R.id.swipe_refresher)
         swipeRefresher?.setOnRefreshListener {
             recyclerView?.adapter?.notifyItemRangeRemoved(0, movies.size)
-//            loadMovies()
             viewModel?.loadMovies()
             swipeRefresher.isRefreshing = false
         }

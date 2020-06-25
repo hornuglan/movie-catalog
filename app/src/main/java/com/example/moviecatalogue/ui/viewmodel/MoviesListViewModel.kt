@@ -1,10 +1,8 @@
 package com.example.moviecatalogue.ui.viewmodel
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.data.MovieModel
 import com.example.moviecatalogue.data.MoviesRepository
 import com.example.moviecatalogue.network.GetMoviesCallback

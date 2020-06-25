@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.network
 
-import com.example.moviecatalogue.R
 import com.example.moviecatalogue.data.MovieModel
 import com.google.gson.annotations.SerializedName
 

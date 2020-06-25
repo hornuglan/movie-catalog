@@ -14,7 +14,6 @@ import com.example.moviecatalogue.App
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.data.MovieModel
-import com.example.moviecatalogue.data.loadPoster
 import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
 import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
 
@@ -44,19 +43,6 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movieItem = arguments?.getParcelable(MOVIE_ITEM) ?: MovieItem(0, "", "", "")
-
-//        movieTitle.text = movieItem.title
-//        movieDescription.text = movieItem.description
-//
-//        Glide.with(view)
-//            .load(movieItem.getPosterPath())
-//            .placeholder(R.color.movieDescriptionPosterPlaceholder)
-//            .fallback(R.drawable.ic_broken_image_black_18dp)
-//            .error(R.drawable.ic_broken_image_black_18dp)
-//            .centerCrop()
-//            .into(moviePoster)
-
         //viewModel
         viewModel = activity?.let {
             ViewModelProvider(it, MovieListViewModelFactory(App.instance.repository)).get(
@@ -67,14 +53,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private val movieDetails = Observer<MovieModel> {
-//        val item = MovieItem(
-//            it.id.toLong(),
-//            it.movieTitle,
-//            it.getPosterPath().toString(),
-//            it.movieDescription
-//        )
         movieTitle.text = it.movieTitle
-//        moviePoster.loadPoster(item.getPosterPath().toString())
         movieDescription.text = it.movieDescription
         Glide.with(this)
             .load(it.getPosterPath())
@@ -83,9 +62,6 @@ class MovieDetailsFragment : Fragment() {
             .error(R.drawable.ic_broken_image_black_18dp)
             .centerCrop()
             .into(moviePoster)
-//        moviePoster.loadPoster(it.getPosterPath())
-//        movieTitle.text = it.movieTitle
-//        movieDescription.text = it.movieDescription
     }
 
     companion object {
