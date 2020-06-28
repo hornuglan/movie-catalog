@@ -53,4 +53,6 @@ dependencies {
     //LiveData
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
+    //Room
+    implementation 'androidx.room:room-runtime:2.2.5'
 }
