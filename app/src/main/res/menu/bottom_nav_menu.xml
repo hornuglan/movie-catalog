@@ -5,13 +5,11 @@
         android:id="@+id/main_list"
         android:icon="@drawable/ic_person_add_black_18dp"
         android:enabled="true"
-        android:title="Main List"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/main_list_nav" />
 
     <item
         android:id="@+id/favourites_list"
         android:icon="@drawable/ic_favorite_black_18dp"
         android:enabled="true"
-        android:title="Favourites List"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/favorites_list_nav" />
 </menu>

@@ -15,9 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.data.MovieModel
-import com.example.moviecatalogue.ui.FavouritesFragment
-import com.example.moviecatalogue.ui.MovieDetailsFragment
-import com.example.moviecatalogue.ui.MoviesListFragment
+import com.example.moviecatalogue.ui.fragment.FavouritesFragment
+import com.example.moviecatalogue.ui.fragment.MovieDetailsFragment
+import com.example.moviecatalogue.ui.fragment.MoviesListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable

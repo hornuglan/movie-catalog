@@ -7,13 +7,6 @@
     <string name="close_app_title">Quitter</string>
     <string name="positive_button">OK</string>
     <string name="negative_button">Annulé</string>
-    <string name="gone_with_the_wind_title">Autant en emporte le vent</string>
-    <string name="grand_hotel_budapest_title">The Grand Budapest Hotel</string>
-    <string name="guardians_of_the_galaxy_title">Les Gardiens de la Galaxie</string>
-    <string name="iron_man_title">Iron Man</string>
-    <string name="knives_out_title">À couteaux tirés</string>
-    <string name="thor_ragnarok_title">Thor : Ragnarok</string>
-    <string name="what_we_do_in_the_shadows_title">Vampires en toute intimité</string>
     <string name="change_theme_button">Changer la theme</string>
     <string name="invite_friend">Bonjour! Rejoignez-moi dans cette application de catalogue de films :-)</string>
     <string name="go_to_favourites_button">Favoris</string>
@@ -21,4 +14,9 @@
     <string name="added_to_fav">Ajouter aux Favoris</string>
     <string name="removed_from_fav">Retirer des favoris</string>
     <string name="undo_string">Annuler</string>
+    <string name="main_list_nav">"Liste principale "</string>
+    <string name="favorites_list_nav">Liste des favoris</string>
+    <string name="error_message">Response error</string>
+    <string name="retry">Retry</string>
+    <string name="something_went_wrong">Something went wrong :(</string>
 </resources>

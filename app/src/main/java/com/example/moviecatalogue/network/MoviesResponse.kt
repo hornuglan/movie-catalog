@@ -11,5 +11,8 @@ data class MoviesResponse(
     @SerializedName("total_results")
     val totalResults: Int = 0,
     @SerializedName("total_pages")
-    val totalPages: Int = 0
-)
+    val totalPages: Int = 0,
+    val errorMessage: String = "Error"
+) {
+    fun isSuccessful(): Boolean = results!!.isNotEmpty()
+}

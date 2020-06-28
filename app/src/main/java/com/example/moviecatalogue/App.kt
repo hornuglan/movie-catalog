@@ -1,6 +1,7 @@
 package com.example.moviecatalogue
 
 import android.app.Application
+import com.example.moviecatalogue.data.MoviesRepository
 import com.example.moviecatalogue.network.Api
 import com.example.moviecatalogue.utils.API_TOKEN
 import com.example.moviecatalogue.utils.TMDB_BASIC_URL
@@ -10,14 +11,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class App : Application() {
-
+    lateinit var repository: MoviesRepository
     lateinit var api: Api
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-
         initRetrofit()
+        initRepository()
     }
 
     private fun initRetrofit() {
@@ -41,6 +42,10 @@ class App : Application() {
             .build()
 
         api = retrofit.create(Api::class.java)
+    }
+
+    private fun initRepository() {
+        repository = MoviesRepository(api)
     }
 
     companion object {
