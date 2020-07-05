@@ -3,9 +3,12 @@ package com.example.moviecatalogue.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moviecatalogue.App
 import com.example.moviecatalogue.data.MovieModel
 import com.example.moviecatalogue.data.MoviesRepository
+import com.example.moviecatalogue.db.Movie
 import com.example.moviecatalogue.network.GetMoviesCallback
+import java.util.concurrent.Executors
 
 class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel() {
     private val moviesData = MutableLiveData<List<MovieModel>>()
@@ -60,4 +63,56 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
     fun openMovieDetails(movie: MovieModel?) {
         movieDetailsData.postValue(movie)
     }
+
+    fun checkCacheSize() {}
+
+    fun loadFromCache() {
+        isMoviesLoadingData.postValue(true)
+        Executors.newSingleThreadScheduledExecutor().execute {
+            val movie = App.instance.moviesDatabase.moviesDao().getAllMovies()
+            moviesData.postValue(movie as List<MovieModel>)
+            moviesLoaded(movie)
+        }
+    }
+
+    fun loadFromRemote() {
+        isMoviesLoadingData.postValue(true)
+        repository.getMovies(page++, object : GetMoviesCallback<MovieModel> {
+            override fun onError(error: String?) {
+                isMoviesLoadingData.postValue(false)
+                messageErrorData.postValue(error)
+                page--
+            }
+
+            override fun onSuccess(newMovieList: List<MovieModel>?) {
+                isMoviesLoadingData.postValue(false)
+                if (newMovieList != null) {
+                    val oldMovieList = moviesData.value?.toMutableList()
+                    oldMovieList?.addAll(newMovieList)
+                    moviesData.postValue(oldMovieList)
+                    saveToCache(newMovieList as List<Movie>)
+                }
+            }
+        })
+    }
+
+    fun saveToCache(list: List<Movie>) {
+        Executors.newSingleThreadScheduledExecutor().execute {
+            val dao = App.instance.moviesDatabase.moviesDao()
+            val result = dao.insertAll(*list.toTypedArray())
+            var i = 0
+            while (i < list.size) {
+                list[i].uuid = result[i].toInt()
+                i++
+            }
+            moviesLoaded(list)
+        }
+    }
+
+    private fun moviesLoaded(movies: List<Movie>) {
+        moviesData.value = movies as List<MovieModel>
+        isMoviesLoadingData.postValue(false)
+    }
+
+    fun loadFavorites() {}
 }
