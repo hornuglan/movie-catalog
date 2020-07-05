@@ -9,9 +9,21 @@ import androidx.room.RoomDatabase
 abstract class MoviesDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
 
-    fun buildDatabase(context: Context) = Room.databaseBuilder(
-        context.applicationContext,
-        MoviesDatabase::class.java,
-        "moviesDatabase"
-    ).build()
+    companion object {
+        @Volatile
+        var instance: MoviesDatabase? = null
+        private val lock= Any()
+
+        fun invoke(context: Context) = instance ?: synchronized(lock) {
+            instance ?: buildDatabase(context).also {
+                instance = it
+            }
+        }
+
+        private fun buildDatabase(context: Context) = Room.databaseBuilder(
+            context.applicationContext,
+            MoviesDatabase::class.java,
+            "moviesDatabase"
+        ).build()
+    }
 }
