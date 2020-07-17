@@ -2,6 +2,7 @@ package com.example.moviecatalogue
 
 import android.app.Application
 import com.example.moviecatalogue.data.MoviesRepository
+import com.example.moviecatalogue.data.SharedPreferencesHelper
 import com.example.moviecatalogue.db.MoviesDatabase
 import com.example.moviecatalogue.network.Api
 import com.example.moviecatalogue.utils.API_TOKEN
@@ -15,6 +16,7 @@ import java.util.concurrent.Executors
 class App : Application() {
     lateinit var repository: MoviesRepository
     lateinit var moviesDatabase: MoviesDatabase
+    lateinit var preferencesHelper: SharedPreferencesHelper
     lateinit var api: Api
 
     override fun onCreate() {
@@ -23,6 +25,7 @@ class App : Application() {
         initRetrofit()
         initRepository()
         initRoom()
+        initSharedPreferences()
     }
 
     private fun initRetrofit() {
@@ -56,6 +59,10 @@ class App : Application() {
         Executors.newSingleThreadScheduledExecutor().execute {
             moviesDatabase = MoviesDatabase.invoke(this)
         }
+    }
+
+    private fun initSharedPreferences() {
+        preferencesHelper= SharedPreferencesHelper.invoke(this)
     }
 
     companion object {

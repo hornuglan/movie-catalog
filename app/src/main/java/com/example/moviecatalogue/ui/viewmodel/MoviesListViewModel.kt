@@ -23,6 +23,9 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
     private val movieDetailsData = MutableLiveData<MovieModel>()
     val movieDetails: LiveData<MovieModel> = movieDetailsData
 
+    private val preferencesHelper = App.instance.preferencesHelper
+    private val timeToRefresh = 1 * 60 * 1000 * 1000 * 1000L
+
     fun loadMovies() {
         isMoviesLoadingData.postValue(true)
         repository.getMovies(1, object : GetMoviesCallback<MovieModel> {
@@ -72,6 +75,16 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
             val movie = App.instance.moviesDatabase.moviesDao().getAllMovies()
             moviesData.postValue(movie as List<MovieModel>)
             moviesLoaded(movie)
+        }
+    }
+
+    fun refresh() {
+        checkCacheSize()
+        val updatedTime = preferencesHelper.getUpdateTime()
+        if (updatedTime != null && updatedTime != 0L && System.nanoTime() - updatedTime < timeToRefresh) {
+            loadFromCache()
+        } else {
+            loadFromRemote()
         }
     }
 

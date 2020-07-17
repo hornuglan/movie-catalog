@@ -108,7 +108,8 @@ class MoviesListFragment : Fragment() {
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (layoutManager.findLastVisibleItemPosition() >= viewModel?.movies?.value?.size!! - LOAD_NEXT_PAGE_ELEMENTS && viewModel?.movies?.value?.size!! > 0) {
-                    viewModel?.loadNextPage()
+//                    viewModel?.loadNextPage()
+                    viewModel?.loadFromRemote()
                 }
             }
         })
