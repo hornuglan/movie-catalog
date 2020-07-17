@@ -50,7 +50,8 @@ class MoviesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeViewModel()
         initRecycler()
-        viewModel?.loadMovies()
+//        viewModel?.loadMovies()
+        viewModel?.loadFromCache()
         onSwipeRefresh()
     }
 
@@ -165,7 +166,8 @@ class MoviesListFragment : Fragment() {
         val swipeRefresher = view?.findViewById<SwipeRefreshLayout>(R.id.swipe_refresher)
         swipeRefresher?.setOnRefreshListener {
             recyclerView?.adapter?.notifyItemRangeRemoved(0, movies.size)
-            viewModel?.loadMovies()
+//            viewModel?.loadMovies()
+            viewModel?.refresh()
             swipeRefresher.isRefreshing = false
         }
     }
