@@ -51,7 +51,7 @@ class MoviesListFragment : Fragment() {
         initializeViewModel()
         initRecycler()
 //        viewModel?.loadMovies()
-        viewModel?.loadFromCache()
+        viewModel?.loadFromRemote()
         onSwipeRefresh()
     }
 

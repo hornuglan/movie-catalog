@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Movie(
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     @SerializedName("id")
     var id: Int,
@@ -26,7 +27,8 @@ data class Movie(
     @ColumnInfo(name = "isInFavorites")
     @SerializedName("isInFavorites")
     var isInFavorites: Boolean = false
-) {
-    @PrimaryKey(autoGenerate = true)
-    var uuid: Int? = 0
-}
+)
+//{
+//    @PrimaryKey(autoGenerate = true)
+//    var uuid: Int? = 0
+//}

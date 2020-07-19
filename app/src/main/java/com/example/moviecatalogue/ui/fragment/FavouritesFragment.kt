@@ -1,24 +1,27 @@
 package com.example.moviecatalogue.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.App
-import com.example.moviecatalogue.ui.adapters.FavouritesAdapter
-import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.data.MovieItem
 import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.ui.adapters.FavouritesAdapter
 import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
 import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
 import java.io.Serializable
-import java.lang.Exception
+import java.util.concurrent.Executors
+
 
 class FavouritesFragment : Fragment() {
 
@@ -46,10 +49,35 @@ class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViewModel()
-        favourites = arguments?.getSerializable(FAVOURITES_LIST) as ArrayList<MovieItem>
+
+        Executors.newSingleThreadScheduledExecutor().execute {
+            val favourites = loadFavourites()
+
+            Handler(Looper.getMainLooper()).post {
+                renderFavourites(view, favourites as ArrayList<MovieItem>)
+            }
+        }
+    }
+
+    private fun loadFavourites() : List<MovieItem> {
+            val dao = App.instance!!.moviesDatabase.moviesDao()
+
+            return dao.getFavorites(true)
+                .map {
+                    MovieItem(
+                        id = it.id.toLong(),
+                        title = it.title,
+                        description = it.description,
+                        poster = it.posterPath.toString()
+                    )
+                }
+    }
+
+    private fun renderFavourites(view: View, favourites: ArrayList<MovieItem>) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.favourites_list_recyclerview)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
+
         if (favourites.isEmpty()) {
             showEmptyView(recyclerView, emptyView)
         } else {

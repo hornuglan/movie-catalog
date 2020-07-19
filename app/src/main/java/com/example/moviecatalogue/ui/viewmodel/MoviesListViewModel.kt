@@ -103,22 +103,32 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
                     val oldMovieList = moviesData.value?.toMutableList()
                     oldMovieList?.addAll(newMovieList)
                     moviesData.postValue(oldMovieList)
-                    saveToCache(newMovieList as List<Movie>)
+                    saveToCache(newMovieList)
                 }
             }
         })
     }
 
-    fun saveToCache(list: List<Movie>) {
+    fun saveToCache(list: List<MovieModel>) {
         Executors.newSingleThreadScheduledExecutor().execute {
             val dao = App.instance.moviesDatabase.moviesDao()
-            val result = dao.insertAll(*list.toTypedArray())
-            var i = 0
-            while (i < list.size) {
-                list[i].uuid = result[i].toInt()
-                i++
+            val convertedMovies = list.map {
+                Movie(
+                    id = it.id,
+                    title = it.movieTitle,
+                    description = it.movieDescription,
+                    posterPath = it.moviePosterPath,
+                    isInFavorites = false
+                )
             }
-            moviesLoaded(list)
+
+            val result = dao.insertAll(convertedMovies)
+//            var i = 0
+//            while (i < list.size) {
+//                list[i].uuid = result[i].toInt()
+//                i++
+//            }
+            moviesLoaded(convertedMovies)
         }
     }
 

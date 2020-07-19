@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +22,8 @@ import com.example.moviecatalogue.ui.fragment.MoviesListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class MainActivity :
@@ -37,6 +40,8 @@ class MainActivity :
 
     private lateinit var bottomNav: BottomNavigationView
     private val themeKey = "currentTheme"
+
+    val executorService: ExecutorService = Executors.newFixedThreadPool(4)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,7 +140,18 @@ class MainActivity :
                     .setAction(R.string.undo_string) { _ ->
                         addToFavouritesView.imageTintList =
                             this.getColorStateList(R.color.add_to_favourites_button)
-                        favourites.remove(item)
+
+                        // TODO: Убрать **********************************************
+                        executorService.execute {
+                            Log.d("Bebeshica", "Zaica")
+                            val dao = App.instance!!.moviesDatabase.moviesDao()
+                            val movie = dao.getMovie(item.id.toInt())
+                            movie.isInFavorites = !movie.isInFavorites
+                            dao.updateMovie(movie)
+                        }
+                        // ************************************************************
+
+//                        favourites.remove(item)
                     }
                 val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
                 params.anchorId = R.id.bottom_navigation
@@ -143,7 +159,18 @@ class MainActivity :
                 snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.added_to_favourites_button)
-                favourites.add(item)
+
+
+                // TODO: Убрать **********************************************
+                executorService.execute {
+                    Log.d("Bebeshica", "Zaica2")
+                    val dao = App.instance!!.moviesDatabase.moviesDao()
+                    val movie = dao.getMovie(item.id.toInt())
+                    movie.isInFavorites = !movie.isInFavorites
+                    dao.updateMovie(movie)
+                    Log.wtf("", "")
+                }
+                // ************************************************************
             }
             this.getColorStateList(R.color.added_to_favourites_button) -> {
                 val parentView = findViewById<View>(R.id.movie_list_frame)
@@ -152,7 +179,15 @@ class MainActivity :
                     .setAction(R.string.undo_string) { _ ->
                         addToFavouritesView.imageTintList =
                             this.getColorStateList(R.color.added_to_favourites_button)
-                        favourites.add(item)
+
+
+                        // TODO: Убрать **********************************************
+                        Executors.newSingleThreadScheduledExecutor().execute {
+                        val dao = App.instance!!.moviesDatabase.moviesDao()
+                        val movie = dao.getMovie(item.id.toInt())
+                        movie.isInFavorites = !movie.isInFavorites
+                        dao.updateMovie(movie)}
+                        // ************************************************************
                     }
                 val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
                 params.anchorId = R.id.bottom_navigation
@@ -160,7 +195,14 @@ class MainActivity :
                 snackbar.show()
                 addToFavouritesView.imageTintList =
                     this.getColorStateList(R.color.add_to_favourites_button)
-                favourites.remove(item)
+
+                // TODO: Убрать **********************************************
+                Executors.newSingleThreadScheduledExecutor().execute {
+                val dao = App.instance!!.moviesDatabase.moviesDao()
+                val movie = dao.getMovie(item.id.toInt())
+                movie.isInFavorites = !movie.isInFavorites
+                dao.updateMovie(movie)}
+                // ************************************************************
             }
         }
     }
@@ -186,7 +228,7 @@ class MainActivity :
         //remove from fav - is executed in favorites fragment
     }
 
-    private fun openFavouritesFragment(favourites: Serializable) {
+    private fun openFavouritesFragment(favourites:  Serializable) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.movie_list_frame, FavouritesFragment.newInstance(favourites))

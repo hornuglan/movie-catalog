@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Movie::class], version = 1)
+@Database(entities = [Movie::class], version = 2)
 abstract class MoviesDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
 
@@ -24,6 +26,14 @@ abstract class MoviesDatabase : RoomDatabase() {
             context.applicationContext,
             MoviesDatabase::class.java,
             "moviesDatabase"
-        ).build()
+        )
+            .fallbackToDestructiveMigration() //delete this and write normal migration!!!
+            .build()
     }
 }
+
+//val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+//    override fun migrate(database: SupportSQLiteDatabase) {
+//        database.execSQL()
+//    }
+//}
