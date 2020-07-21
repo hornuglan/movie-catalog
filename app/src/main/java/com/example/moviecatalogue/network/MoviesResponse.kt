@@ -1,13 +1,13 @@
 package com.example.moviecatalogue.network
 
-import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.db.Movie
 import com.google.gson.annotations.SerializedName
 
 data class MoviesResponse(
     @SerializedName("page")
     val page: Int? = null,
     @SerializedName("results")
-    val results: List<MovieModel>? = null,
+    val results: List<Movie>? = null,
     @SerializedName("total_results")
     val totalResults: Int = 0,
     @SerializedName("total_pages")

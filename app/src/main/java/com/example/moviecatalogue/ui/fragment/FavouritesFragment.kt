@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.App
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.data.MovieItem
-import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.db.Movie
 import com.example.moviecatalogue.ui.adapters.FavouritesAdapter
 import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
 import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
@@ -27,7 +26,7 @@ class FavouritesFragment : Fragment() {
 
     var listener: PreviewFromFavClickListener? = null
 
-    private var favourites = arrayListOf<MovieItem>()
+    private var favourites = arrayListOf<Movie>()
     private var viewModel: MoviesListViewModel? = null
 
     private lateinit var emptyView: TextView
@@ -54,26 +53,26 @@ class FavouritesFragment : Fragment() {
             val favourites = loadFavourites()
 
             Handler(Looper.getMainLooper()).post {
-                renderFavourites(view, favourites as ArrayList<MovieItem>)
+                renderFavourites(view, favourites as ArrayList<Movie>)
             }
         }
     }
 
-    private fun loadFavourites() : List<MovieItem> {
+    private fun loadFavourites() : List<Movie> {
             val dao = App.instance!!.moviesDatabase.moviesDao()
 
             return dao.getFavorites(true)
-                .map {
-                    MovieItem(
-                        id = it.id.toLong(),
-                        title = it.title,
-                        description = it.description,
-                        poster = it.posterPath.toString()
-                    )
-                }
+//                .map {
+//                    Movie(
+//                        id = it.id.toLong(),
+//                        title = it.title,
+//                        description = it.description,
+//                        poster = it.posterPath.toString()
+//                    )
+//                }
     }
 
-    private fun renderFavourites(view: View, favourites: ArrayList<MovieItem>) {
+    private fun renderFavourites(view: View, favourites: ArrayList<Movie>) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.favourites_list_recyclerview)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -87,16 +86,16 @@ class FavouritesFragment : Fragment() {
                     favourites,
                     {
                         viewModel?.openMovieDetails(
-                            MovieModel(
+                            Movie(
                                 it.id.toInt(),
                                 it.title,
-                                it.getPosterPath().toString(),
+                                it.poster.toString(),
                                 it.description
                             )
                         )
                         listener?.openPreviewFromFavourites(it)
                     },
-                    { movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView ->
+                    { movieItem: Movie, position: Int, removeFromFavouritesView: ImageView ->
                         favourites.remove(movieItem)
                         recyclerView.adapter?.notifyItemRemoved(position)
                         recyclerView.adapter?.notifyDataSetChanged()
@@ -133,12 +132,12 @@ class FavouritesFragment : Fragment() {
     }
 
     interface PreviewFromFavClickListener {
-        fun openPreviewFromFavourites(item: MovieItem)
+        fun openPreviewFromFavourites(item: Movie)
     }
 
     interface RemoveFromFavClickListener {
         fun removeFromFavourites(
-            movieItem: MovieModel,
+            movieItem: Movie,
             position: Int,
             removeFromFavouritesView: ImageView
         )

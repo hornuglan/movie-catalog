@@ -7,13 +7,13 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.ui.viewholders.MovieItemViewHolder
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.data.MovieItem
+import com.example.moviecatalogue.db.Movie
 
 class FavouritesAdapter(
     private val inflater: LayoutInflater,
-    private val items: ArrayList<MovieItem>,
-    private val listener: ((movieItem: MovieItem) -> Unit)?,
-    private val listener1: ((movieItem: MovieItem, position: Int, removeFromFavouritesView: ImageView) -> Unit)?
+    private val items: ArrayList<Movie>,
+    private val listener: ((movieItem: Movie) -> Unit)?,
+    private val listener1: ((movieItem: Movie, position: Int, removeFromFavouritesView: ImageView) -> Unit)?
 ) : RecyclerView.Adapter<MovieItemViewHolder>() {
 
     override fun getItemCount() = items.size

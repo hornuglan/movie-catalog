@@ -1,6 +1,6 @@
 package com.example.moviecatalogue.network
 
-import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.db.Movie
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,5 +14,5 @@ interface Api {
     ): Call<MoviesResponse>
 
     @GET("movie/{id}")
-    fun getMovieDetails(@Path("id") id: Int): Call<MovieModel>
+    fun getMovieDetails(@Path("id") id: Int): Call<Movie>
 }

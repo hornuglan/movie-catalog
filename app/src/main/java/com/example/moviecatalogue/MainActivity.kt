@@ -14,8 +14,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.example.moviecatalogue.data.MovieItem
-import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.db.Movie
 import com.example.moviecatalogue.ui.fragment.FavouritesFragment
 import com.example.moviecatalogue.ui.fragment.MovieDetailsFragment
 import com.example.moviecatalogue.ui.fragment.MoviesListFragment
@@ -33,10 +32,10 @@ class MainActivity :
     FavouritesFragment.PreviewFromFavClickListener,
     FavouritesFragment.RemoveFromFavClickListener {
 
-    val items = mutableListOf<MovieItem>()
+    val items = mutableListOf<Movie>()
     private lateinit var sharedPreferences: SharedPreferences
 
-    private val favourites: ArrayList<MovieItem> = arrayListOf()
+    private val favourites: ArrayList<Movie> = arrayListOf()
 
     private lateinit var bottomNav: BottomNavigationView
     private val themeKey = "currentTheme"
@@ -118,7 +117,7 @@ class MainActivity :
     }
 
     //opens movie details from the main movie list fragment
-    override fun openPreview(item: MovieItem) {
+    override fun openPreview(item: Movie) {
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -131,7 +130,7 @@ class MainActivity :
     }
 
     //1 click on heart image view adds movie to favourites list, 2 clicks - remove movie from favourites
-    override fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView) {
+    override fun addToFavourites(item: Movie, addToFavouritesView: ImageView) {
         when (addToFavouritesView.imageTintList) {
             this.getColorStateList(R.color.add_to_favourites_button) -> {
                 val parentView = findViewById<View>(R.id.movie_list_frame)
@@ -208,7 +207,7 @@ class MainActivity :
     }
 
     //opens movie details from the favourites
-    override fun openPreviewFromFavourites(item: MovieItem) {
+    override fun openPreviewFromFavourites(item: Movie) {
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -221,7 +220,7 @@ class MainActivity :
     }
 
     override fun removeFromFavourites(
-        movieItem: MovieModel,
+        movieItem: Movie,
         position: Int,
         removeFromFavouritesView: ImageView
     ) {

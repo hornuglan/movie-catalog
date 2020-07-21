@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.moviecatalogue.App
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.data.MovieItem
-import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.db.Movie
 import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
 import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
 
@@ -52,11 +51,11 @@ class MovieDetailsFragment : Fragment() {
         viewModel?.movieDetails?.observe(this, movieDetails)
     }
 
-    private val movieDetails = Observer<MovieModel> {
-        movieTitle.text = it.movieTitle
-        movieDescription.text = it.movieDescription
+    private val movieDetails = Observer<Movie> {
+        movieTitle.text = it.title
+        movieDescription.text = it.description
         Glide.with(this)
-            .load(it.getPosterPath())
+            .load(it.poster)
             .placeholder(R.color.movieDescriptionPosterPlaceholder)
             .fallback(R.drawable.ic_broken_image_black_18dp)
             .error(R.drawable.ic_broken_image_black_18dp)
@@ -69,12 +68,12 @@ class MovieDetailsFragment : Fragment() {
 
         const val MOVIE_ITEM = "movieItem"
 
-        fun newInstance(item: MovieItem): MovieDetailsFragment {
+        fun newInstance(item: Movie): MovieDetailsFragment {
             val fragment =
                 MovieDetailsFragment()
 
             val bundle = Bundle()
-            bundle.putParcelable(MOVIE_ITEM, item)
+//            bundle.putParcelable(MOVIE_ITEM, item)
             fragment.arguments = bundle
 
             return fragment

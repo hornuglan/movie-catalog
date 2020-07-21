@@ -16,8 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moviecatalogue.App
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.data.MovieItem
-import com.example.moviecatalogue.data.MovieModel
+import com.example.moviecatalogue.db.Movie
 import com.example.moviecatalogue.ui.adapters.MoviesAdapter
 import com.example.moviecatalogue.ui.viewmodel.MovieListViewModelFactory
 import com.example.moviecatalogue.ui.viewmodel.MoviesListViewModel
@@ -36,7 +35,7 @@ class MoviesListFragment : Fragment() {
         const val LOAD_NEXT_PAGE_ELEMENTS = 5
     }
 
-    private val movies = arrayListOf<MovieItem>()
+    private val movies = arrayListOf<Movie>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,11 +71,11 @@ class MoviesListFragment : Fragment() {
     }
 
     interface OpenPreviewClickListener {
-        fun openPreview(item: MovieItem)
+        fun openPreview(item: Movie)
     }
 
     interface AddToFavListener {
-        fun addToFavourites(item: MovieItem, addToFavouritesView: ImageView)
+        fun addToFavourites(item: Movie, addToFavouritesView: ImageView)
     }
 
     private fun initRecycler() {
@@ -88,16 +87,16 @@ class MoviesListFragment : Fragment() {
             movies,
             {
                 viewModel?.openMovieDetails(
-                    MovieModel(
+                    Movie(
                         it.id.toInt(),
                         it.title,
-                        it.getPosterPath().toString(),
+                        it.poster.toString(),
                         it.description
                     )
                 )
                 listener?.openPreview(it)
             },
-            { movieItem: MovieItem, addToFavouritesView: ImageView ->
+            { movieItem: Movie, addToFavouritesView: ImageView ->
                 listener1?.addToFavourites(
                     movieItem,
                     addToFavouritesView
@@ -130,13 +129,14 @@ class MoviesListFragment : Fragment() {
         viewModel?.movieDetails?.observe(this, onMovieClicked)
     }
 
-    private val renderMovies = Observer<List<MovieModel>> {
+    private val renderMovies = Observer<List<Movie>> {
         val progressBar = view?.findViewById<ProgressBar>(R.id.movies_list_progress_bar)
         progressBar?.visibility = View.GONE
+        Thread.sleep(1000)
         adapter?.updateRecyclerView(it)
     }
 
-    private val onMovieClicked = Observer<MovieModel> {
+    private val onMovieClicked = Observer<Movie> {
         viewModel?.openMovieDetails(it)
     }
 
