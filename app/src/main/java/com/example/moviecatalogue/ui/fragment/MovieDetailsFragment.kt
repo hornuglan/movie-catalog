@@ -55,7 +55,7 @@ class MovieDetailsFragment : Fragment() {
         movieTitle.text = it.title
         movieDescription.text = it.description
         Glide.with(this)
-            .load(it.poster)
+            .load(it.getPosterPath())
             .placeholder(R.color.movieDescriptionPosterPlaceholder)
             .fallback(R.drawable.ic_broken_image_black_18dp)
             .error(R.drawable.ic_broken_image_black_18dp)
